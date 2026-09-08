@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login — MatrixFlowAI</title>
+<meta name="description" content="Sign in to your MatrixFlowAI account.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-redirect-if-signed-in="true">
+<header><div class="wrap"><nav>
+<a class="brand" href="index.html">〽 MatrixFlow<span>AI</span></a>
+<a class="ghost" href="index.html">← Home</a>
+</nav></div></header>
+
+<main class="auth-page">
+  <div class="auth-card">
+    <div class="grad auth-kicker">WELCOME BACK</div>
+    <h1>Sign in to MatrixFlowAI</h1>
+    <p class="muted">Access your dashboard and MatrixFlowAI tools.</p>
+
+    <div id="authMessage" class="auth-message" hidden></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" minlength="6" required placeholder="Your password">
+      </div>
+      <button class="btn auth-submit" type="submit">Sign In →</button>
+    </form>
+
+    <button id="resetPassword" class="text-button" type="button">Forgot password?</button>
+    <p class="auth-switch">New to MatrixFlowAI? <a href="signup.html">Create an account</a></p>
+  </div>
+</main>
+
+<script type="module" src="auth.js"></script>
+</body>
+</html>

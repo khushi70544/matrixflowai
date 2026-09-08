@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard — MatrixFlowAI</title>
+<meta name="description" content="Your MatrixFlowAI dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-protected="true">
+<header><div class="wrap"><nav>
+<a class="brand" href="index.html">〽 MatrixFlow<span>AI</span></a>
+<div class="dash-user"><span id="userEmail">Loading...</span><button id="logoutBtn" class="ghost" type="button">Log out</button></div>
+</nav></div></header>
+
+<div id="authGate" class="auth-gate">Checking your account...</div>
+
+<main id="appContent" hidden>
+<section class="page-hero dashboard-hero"><div class="wrap">
+<span class="eyebrow">YOUR DASHBOARD</span>
+<h1>Welcome to <span class="grad">MatrixFlowAI</span></h1>
+<p>Your account is active. This is the starting point for ChatFlow and future MatrixFlowAI tools.</p>
+</div></section>
+
+<section><div class="wrap">
+<div class="grid">
+<div class="card product"><div class="icon">💬</div><h3>ChatFlow</h3><p>Your AI chat workspace. We’ll connect the real AI assistant in the next step.</p><span class="product-action">Coming next →</span></div>
+<div class="card product"><div class="icon">✦</div><h3>FlowWrite</h3><p>AI-assisted writing tools for content, drafts and summaries.</p><span class="product-action">Coming soon</span></div>
+<div class="card product"><div class="icon">▥</div><h3>DataMind</h3><p>Turn information and data into clearer insights.</p><span class="product-action">Coming soon</span></div>
+</div>
+</div></section>
+</main>
+
+<script type="module" src="auth.js"></script>
+</body>
+</html>
