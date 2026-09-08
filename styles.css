@@ -102,3 +102,6 @@ footer{border-top:1px solid #18263d;padding:35px 0;color:#8998b0;font-size:13px}
   .dash-user{gap:8px}
   .dash-user #userEmail{max-width:145px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 }
+
+/* Ensure elements using the HTML hidden attribute are actually hidden */
+[hidden]{display:none !important;}
