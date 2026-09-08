@@ -126,8 +126,15 @@ if (document.body.dataset.protected === "true") {
     }
     const emailEl = document.getElementById("userEmail");
     if (emailEl) emailEl.textContent = user.email || "Signed-in user";
-    if (gate) gate.hidden = true;
-    if (appContent) appContent.hidden = false;
+    if (gate) {
+      gate.hidden = true;
+      gate.style.display = "none";
+      gate.remove();
+    }
+    if (appContent) {
+      appContent.hidden = false;
+      appContent.style.display = "block";
+    }
   });
 }
 
