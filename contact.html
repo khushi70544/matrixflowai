@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact — MatrixFlowAI</title>
+<meta name="description" content="Contact MatrixFlowAI about products, custom AI solutions and collaboration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="brand" href="index.html">〽 MatrixFlow<span>AI</span></a>
+<div class="links desktop-links">
+<a href="products.html">Products</a>
+<a href="about.html">About</a>
+<a href="features.html">Features</a>
+<a href="pricing.html">Pricing</a>
+<a href="contact.html">Contact</a>
+</div>
+<a class="btn header-cta" href="contact.html">Get Started</a>
+<button class="mobile-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+</nav></div>
+<div id="mobileMenu" class="mobile-menu">
+<a href="products.html">Products</a>
+<a href="about.html">About</a>
+<a href="features.html">Features</a>
+<a href="pricing.html">Pricing</a>
+<a href="contact.html">Contact</a>
+</div></header>
+
+<main>
+<section class="page-hero"><div class="wrap"><span class="eyebrow">CONTACT</span><h1>Let’s Build Something <span class="grad">Useful With AI</span></h1><p>Send an enquiry about MatrixFlowAI products, custom solutions or collaboration.</p></div></section>
+<section><div class="wrap">
+<div class="contact-box">
+<form onsubmit="sendMail(event)">
+<div class="contact-row">
+<div class="form-group"><label for="name">Your name</label><input id="name" name="name" required placeholder="Your name"></div>
+<div class="form-group"><label for="email">Your email</label><input id="email" name="email" type="email" required placeholder="you@example.com"></div>
+</div>
+<div class="form-group"><label for="message">How can we help?</label><textarea id="message" name="message" required placeholder="Tell us what you want to build or ask..."></textarea></div>
+<button class="btn" type="submit">Send Enquiry →</button>
+<p class="notice">This static GitHub Pages form opens your email app and prepares a message to admin@matrixflowai.in. No form data is stored on the website.</p>
+</form>
+</div>
+</div></section>
+<section class="cta"><div class="wrap"><h2>Prefer email?</h2><a class="btn" href="mailto:admin@matrixflowai.in">Email admin@matrixflowai.in</a></div></section>
+</main>
+
+<footer><div class="wrap foot">
+<div>© 2026 MatrixFlowAI. All rights reserved.</div>
+<div><a href="about.html">About</a> &nbsp;·&nbsp; <a href="contact.html">Contact</a> &nbsp;·&nbsp; <a href="mailto:admin@matrixflowai.in">admin@matrixflowai.in</a></div>
+</div></footer>
+<script src="script.js"></script>
+</body>
+</html>
