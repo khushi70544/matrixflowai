@@ -9,7 +9,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+.chatflow-box{max-width:900px;margin:0 auto 40px;background:#fff;border:1px solid #e8e8ef;border-radius:20px;padding:22px;box-shadow:0 10px 35px rgba(0,0,0,.06)}
+.chatflow-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.chatflow-head .icon{font-size:28px}
+.chatflow-head h2{margin:0;font-size:22px}
+.chat-messages{min-height:260px;max-height:430px;overflow:auto;background:#f7f7fa;border-radius:14px;padding:14px;margin-bottom:14px}
+.chat-msg{max-width:85%;padding:11px 14px;border-radius:14px;margin:8px 0;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.chat-msg.user{margin-left:auto;background:#111;color:#fff;border-bottom-right-radius:5px}
+.chat-msg.ai{background:#fff;border:1px solid #e6e6ec;border-bottom-left-radius:5px}
+.chat-empty{text-align:center;color:#777;padding:80px 10px 70px}
+.chat-form{display:flex;gap:10px}
+.chat-form textarea{flex:1;min-height:48px;max-height:140px;resize:vertical;border:1px solid #ddd;border-radius:12px;padding:13px;font:inherit}
+.chat-form button{border:0;border-radius:12px;padding:0 20px;background:#111;color:#fff;font-weight:700;cursor:pointer}
+.chat-form button:disabled{opacity:.5;cursor:not-allowed}
+.chat-status{font-size:12px;color:#777;margin-top:9px}
+@media(max-width:600px){.chatflow-box{padding:14px}.chat-form{align-items:stretch}.chat-form button{padding:0 15px}}
+</style>
 </head>
+
 <body data-protected="true">
 <header><div class="wrap"><nav>
 <a class="brand" href="index.html">〽 MatrixFlow<span>AI</span></a>
@@ -22,18 +40,102 @@
 <section class="page-hero dashboard-hero"><div class="wrap">
 <span class="eyebrow">YOUR DASHBOARD</span>
 <h1>Welcome to <span class="grad">MatrixFlowAI</span></h1>
-<p>Your account is active. This is the starting point for ChatFlow and future MatrixFlowAI tools.</p>
+<p>Your account is active. ChatFlow is now connected to MatrixFlow AI.</p>
 </div></section>
 
-<section><div class="wrap">
+<section>
+<div class="wrap">
+<div class="chatflow-box">
+<div class="chatflow-head">
+<div class="icon">💬</div>
+<div>
+<h2>ChatFlow</h2>
+<div style="color:#777;font-size:13px">Powered by MatrixFlow AI</div>
+</div>
+</div>
+
+<div id="chatMessages" class="chat-messages">
+<div id="chatEmpty" class="chat-empty">Ask anything to start chatting.</div>
+</div>
+
+<form id="chatForm" class="chat-form">
+<textarea id="promptInput" placeholder="Message MatrixFlow AI..." required></textarea>
+<button id="sendBtn" type="submit">Send</button>
+</form>
+<div id="chatStatus" class="chat-status"></div>
+</div>
+
 <div class="grid">
-<div class="card product"><div class="icon">💬</div><h3>ChatFlow</h3><p>Your AI chat workspace. We’ll connect the real AI assistant in the next step.</p><span class="product-action">Coming next →</span></div>
 <div class="card product"><div class="icon">✦</div><h3>FlowWrite</h3><p>AI-assisted writing tools for content, drafts and summaries.</p><span class="product-action">Coming soon</span></div>
 <div class="card product"><div class="icon">▥</div><h3>DataMind</h3><p>Turn information and data into clearer insights.</p><span class="product-action">Coming soon</span></div>
 </div>
-</div></section>
+</div>
+</section>
 </main>
 
 <script type="module" src="auth.js"></script>
+<script>
+const WORKER_URL = "https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
+const form = document.getElementById("chatForm");
+const input = document.getElementById("promptInput");
+const sendBtn = document.getElementById("sendBtn");
+const messages = document.getElementById("chatMessages");
+const empty = document.getElementById("chatEmpty");
+const status = document.getElementById("chatStatus");
+
+function addMessage(text, type) {
+  if (empty) empty.remove();
+  const div = document.createElement("div");
+  div.className = "chat-msg " + type;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const prompt = input.value.trim();
+  if (!prompt || sendBtn.disabled) return;
+
+  addMessage(prompt, "user");
+  input.value = "";
+  sendBtn.disabled = true;
+  status.textContent = "Thinking...";
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({prompt})
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      throw new Error(
+        typeof data.error === "string"
+          ? data.error
+          : "AI request failed (" + res.status + ")"
+      );
+    }
+
+    addMessage(data.response || "No response received.", "ai");
+    status.textContent = "";
+  } catch (err) {
+    addMessage("Sorry, I couldn't connect to the AI right now. " + err.message, "ai");
+    status.textContent = "Connection error";
+  } finally {
+    sendBtn.disabled = false;
+    input.focus();
+  }
+});
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    form.requestSubmit();
+  }
+});
+</script>
 </body>
 </html>
