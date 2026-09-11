@@ -5,18 +5,70 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dashboard — MatrixFlowAI</title>
 <meta name="description" content="Your MatrixFlowAI dashboard.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="styles.css">
+
 <style>
-.chatflow{margin-top:28px;margin-bottom:35px;padding:20px;border:1px solid #e8e8ee;border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(0,0,0,.05)}
-.chatflow h2{margin:0 0 5px}
-.chatflow-sub{margin:0 0 16px;color:#777;font-size:14px}
-.chat-messages{height:360px;overflow-y:auto;padding:14px;background:#f7f7f9;border-radius:14px;margin-bottom:12px}
-.chat-empty{text-align:center;color:#888;padding-top:145px}
-.chat-message{max-width:85%;padding:11px 14px;border-radius:14px;margin:8px 0;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.chat-user{margin-left:auto;background:#111;color:#fff;border-bottom-right-radius:4px}
+/* ==============================
+   MATRIXFLOWAI CHATFLOW
+   ============================== */
+
+.chatflow{
+  margin-top:28px;
+  margin-bottom:35px;
+  padding:20px;
+  border:1px solid #e8e8ee;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 8px 28px rgba(0,0,0,.05);
+}
+
+.chatflow h2{
+  margin:0 0 5px;
+}
+
+.chatflow-sub{
+  margin:0 0 16px;
+  color:#777;
+  font-size:14px;
+}
+
+.chat-messages{
+  height:360px;
+  overflow-y:auto;
+  padding:14px;
+  background:#f7f7f9;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+
+.chat-empty{
+  text-align:center;
+  color:#888;
+  padding-top:145px;
+}
+
+.chat-message{
+  max-width:85%;
+  padding:11px 14px;
+  border-radius:14px;
+  margin:8px 0;
+  line-height:1.5;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.chat-user{
+  margin-left:auto;
+  background:#111;
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+
 .chat-ai{
   background:#111827;
   color:#ffffff;
@@ -24,168 +76,504 @@
   border-bottom-left-radius:4px;
   box-shadow:0 4px 18px rgba(0,0,0,.18);
 }
-.chat-form{display:flex;gap:9px}
-.chat-input{flex:1;min-height:48px;max-height:140px;resize:vertical;border:1px solid #d9d9df;border-radius:12px;padding:12px;font:inherit;outline:none}
-.chat-input:focus{border-color:#777}
-.chat-send{border:0;border-radius:12px;padding:0 19px;background:#111;color:#fff;font-weight:700;cursor:pointer}
-.chat-send:disabled{opacity:.55}
-.chat-status{min-height:18px;margin-top:8px;color:#777;font-size:12px}
-@media(max-width:600px){.chatflow{padding:14px}.chat-messages{height:330px}.chat-form{align-items:stretch}.chat-send{padding:0 14px}}
+
+.chat-form{
+  display:flex;
+  gap:9px;
+}
+
+.chat-input{
+  flex:1;
+  min-height:48px;
+  max-height:140px;
+  resize:vertical;
+  border:1px solid #d9d9df;
+  border-radius:12px;
+  padding:12px;
+  font:inherit;
+  outline:none;
+}
+
+.chat-input:focus{
+  border-color:#777;
+}
+
+.chat-send{
+  border:0;
+  border-radius:12px;
+  padding:0 19px;
+  background:#111;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.chat-send:hover{
+  opacity:.9;
+}
+
+.chat-send:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.chat-status{
+  min-height:18px;
+  margin-top:8px;
+  color:#777;
+  font-size:12px;
+}
+
+/* ==============================
+   PREMIUM TOOL CARDS
+   ============================== */
+
+.product{
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+.product:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+/* ==============================
+   MOBILE
+   ============================== */
+
+@media(max-width:600px){
+
+  .chatflow{
+    padding:14px;
+  }
+
+  .chat-messages{
+    height:330px;
+  }
+
+  .chat-form{
+    align-items:stretch;
+  }
+
+  .chat-send{
+    padding:0 14px;
+  }
+
+  .chat-message{
+    max-width:92%;
+  }
+}
 </style>
 </head>
 
 <body data-protected="true">
 
 <header>
-<div class="wrap">
-<nav>
-<a class="brand" href="index.html">〽 MatrixFlow<span>AI</span></a>
-<div class="dash-user">
-<span id="userEmail">Loading...</span>
-<button id="logoutBtn" class="ghost" type="button">Log out</button>
-</div>
-</nav>
-</div>
+  <div class="wrap">
+
+    <nav>
+
+      <a class="brand" href="index.html">
+        〽 MatrixFlow<span>AI</span>
+      </a>
+
+      <div class="dash-user">
+
+        <span id="userEmail">
+          Loading...
+        </span>
+
+        <button
+          id="logoutBtn"
+          class="ghost"
+          type="button">
+          Log out
+        </button>
+
+      </div>
+
+    </nav>
+
+  </div>
 </header>
 
-<div id="authGate" class="auth-gate">Checking your account...</div>
+
+<div id="authGate" class="auth-gate">
+  Checking your account...
+</div>
+
 
 <main id="appContent" hidden>
 
-<section class="page-hero dashboard-hero">
-<div class="wrap">
-<span class="eyebrow">YOUR DASHBOARD</span>
-<h1>Welcome to <span class="grad">MatrixFlowAI</span></h1>
-<p>Your account is active. ChatFlow is ready to use.</p>
-</div>
-</section>
+  <!-- HERO -->
 
-<section>
-<div class="wrap">
+  <section class="page-hero dashboard-hero">
 
-<div class="chatflow">
-<h2>💬 ChatFlow</h2>
-<p class="chatflow-sub">Your AI chat workspace — powered by MatrixFlow AI.</p>
+    <div class="wrap">
 
-<div id="chatMessages" class="chat-messages">
-<div id="chatEmpty" class="chat-empty">Ask anything to start chatting.</div>
-</div>
+      <span class="eyebrow">
+        YOUR DASHBOARD
+      </span>
 
-<form id="chatForm" class="chat-form">
-<textarea id="chatInput" class="chat-input" placeholder="Message MatrixFlow AI..." required></textarea>
-<button id="chatSend" class="chat-send" type="submit">Send</button>
-</form>
+      <h1>
+        Welcome to
+        <span class="grad">
+          MatrixFlowAI
+        </span>
+      </h1>
 
-<div id="chatStatus" class="chat-status"></div>
-</div>
+      <p>
+        Your account is active. ChatFlow is ready to use.
+      </p>
 
-<div class="grid">
+    </div>
 
-<div class="card product">
-<div class="icon">✦</div>
-<h3>FlowWrite</h3>
-<p>AI-assisted writing tools for content, drafts and summaries.</p>
-<span class="product-action">Coming soon</span>
-</div>
+  </section>
 
-<div class="card product">
-<div class="icon">▥</div>
-<h3>DataMind</h3>
-<p>Turn information and data into clearer insights.</p>
-<span class="product-action">Coming soon</span>
-</div>
 
-</div>
+  <!-- AI CHAT -->
 
-</div>
-</section>
+  <section>
+
+    <div class="wrap">
+
+      <div class="chatflow">
+
+        <h2>
+          💬 ChatFlow
+        </h2>
+
+        <p class="chatflow-sub">
+          Your AI chat workspace — powered by MatrixFlow AI.
+        </p>
+
+
+        <div
+          id="chatMessages"
+          class="chat-messages">
+
+          <div
+            id="chatEmpty"
+            class="chat-empty">
+
+            Ask anything to start chatting.
+
+          </div>
+
+        </div>
+
+
+        <form
+          id="chatForm"
+          class="chat-form">
+
+          <textarea
+            id="chatInput"
+            class="chat-input"
+            placeholder="Message MatrixFlow AI..."
+            required></textarea>
+
+          <button
+            id="chatSend"
+            class="chat-send"
+            type="submit">
+
+            Send
+
+          </button>
+
+        </form>
+
+
+        <div
+          id="chatStatus"
+          class="chat-status">
+        </div>
+
+      </div>
+
+
+      <!-- OTHER AI TOOLS -->
+
+      <div class="grid">
+
+        <div class="card product">
+
+          <div class="icon">
+            ✦
+          </div>
+
+          <h3>
+            FlowWrite
+          </h3>
+
+          <p>
+            AI-assisted writing tools for content,
+            drafts and summaries.
+          </p>
+
+          <span class="product-action">
+            Coming soon
+          </span>
+
+        </div>
+
+
+        <div class="card product">
+
+          <div class="icon">
+            ▥
+          </div>
+
+          <h3>
+            DataMind
+          </h3>
+
+          <p>
+            Turn information and data into clearer
+            insights.
+          </p>
+
+          <span class="product-action">
+            Coming soon
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </main>
 
-<script type="module" src="auth.js"></script>
+
+<!-- AUTH -->
+
+<script
+  type="module"
+  src="auth.js">
+</script>
+
+
+<!-- CHATFLOW -->
 
 <script>
-const MATRIXFLOW_WORKER = "https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
 
-const chatForm = document.getElementById("chatForm");
-const chatInput = document.getElementById("chatInput");
-const chatSend = document.getElementById("chatSend");
-const chatMessages = document.getElementById("chatMessages");
-const chatStatus = document.getElementById("chatStatus");
-const chatEmpty = document.getElementById("chatEmpty");
+const MATRIXFLOW_WORKER =
+  "https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
 
-function addChatMessage(text, type) {
-  if (chatEmpty) chatEmpty.remove();
 
-  const message = document.createElement("div");
-  message.className = "chat-message " + (type === "user" ? "chat-user" : "chat-ai");
+const chatForm =
+  document.getElementById("chatForm");
+
+const chatInput =
+  document.getElementById("chatInput");
+
+const chatSend =
+  document.getElementById("chatSend");
+
+const chatMessages =
+  document.getElementById("chatMessages");
+
+const chatStatus =
+  document.getElementById("chatStatus");
+
+const chatEmpty =
+  document.getElementById("chatEmpty");
+
+
+function addChatMessage(text, type){
+
+  if(chatEmpty){
+    chatEmpty.remove();
+  }
+
+
+  const message =
+    document.createElement("div");
+
+
+  message.className =
+    "chat-message " +
+    (type === "user"
+      ? "chat-user"
+      : "chat-ai");
+
+
   message.textContent = text;
 
+
   chatMessages.appendChild(message);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+  chatMessages.scrollTop =
+    chatMessages.scrollHeight;
+
 }
 
-chatForm.addEventListener("submit", async function(event) {
-  event.preventDefault();
 
-  const prompt = chatInput.value.trim();
-  if (!prompt || chatSend.disabled) return;
+chatForm.addEventListener(
+  "submit",
+  async function(event){
 
-  addChatMessage(prompt, "user");
-  chatInput.value = "";
-  chatSend.disabled = true;
-  chatStatus.textContent = "Thinking...";
+    event.preventDefault();
 
-  try {
-    const response = await fetch(MATRIXFLOW_WORKER, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        prompt: prompt
-      })
-    });
 
-    const data = await response.json().catch(() => null);
+    const prompt =
+      chatInput.value.trim();
 
-    if (!response.ok) {
-      let errorText = "AI request failed (" + response.status + ")";
-      if (data && data.error) {
-        errorText = typeof data.error === "string"
-          ? data.error
-          : JSON.stringify(data.error);
-      }
-      throw new Error(errorText);
+
+    if(
+      !prompt ||
+      chatSend.disabled
+    ){
+      return;
     }
 
-    const answer = data && data.response
-      ? data.response
-      : "No response received from MatrixFlow AI.";
 
-    addChatMessage(answer, "ai");
-    chatStatus.textContent = "";
-
-  } catch (error) {
-    console.error("ChatFlow error:", error);
     addChatMessage(
-      "Connection error: " + (error.message || "Unable to reach MatrixFlow AI."),
-      "ai"
+      prompt,
+      "user"
     );
-    chatStatus.textContent = "Please try again.";
-  } finally {
-    chatSend.disabled = false;
-    chatInput.focus();
-  }
-});
 
-chatInput.addEventListener("keydown", function(event) {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
-    chatForm.requestSubmit();
+
+    chatInput.value = "";
+
+
+    chatSend.disabled = true;
+
+
+    chatStatus.textContent =
+      "Thinking...";
+
+
+    try{
+
+      const response =
+        await fetch(
+          MATRIXFLOW_WORKER,
+          {
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+              prompt:prompt
+            })
+          }
+        );
+
+
+      const data =
+        await response
+          .json()
+          .catch(() => null);
+
+
+      if(!response.ok){
+
+        let errorText =
+          "AI request failed (" +
+          response.status +
+          ")";
+
+
+        if(
+          data &&
+          data.error
+        ){
+
+          errorText =
+            typeof data.error === "string"
+              ? data.error
+              : JSON.stringify(data.error);
+
+        }
+
+
+        throw new Error(
+          errorText
+        );
+
+      }
+
+
+      const answer =
+        data && data.response
+          ? data.response
+          : "No response received from MatrixFlow AI.";
+
+
+      addChatMessage(
+        answer,
+        "ai"
+      );
+
+
+      chatStatus.textContent = "";
+
+
+    }catch(error){
+
+      console.error(
+        "ChatFlow error:",
+        error
+      );
+
+
+      addChatMessage(
+        "Connection error: " +
+        (
+          error.message ||
+          "Unable to reach MatrixFlow AI."
+        ),
+        "ai"
+      );
+
+
+      chatStatus.textContent =
+        "Please try again.";
+
+
+    }finally{
+
+      chatSend.disabled = false;
+
+      chatInput.focus();
+
+    }
+
   }
-});
+);
+
+
+chatInput.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+
+      chatForm.requestSubmit();
+
+    }
+
+  }
+);
+
 </script>
 
 </body>
-</html>
+  </html>
