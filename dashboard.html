@@ -2172,4 +2172,291 @@ async function sendMessage() {
     removeMessage(typingId);
 
 
-    if (!respons
+    if (!response.ok) {id="next1"
+    if (!response.ok) {
+
+      addAIMessage(
+        "⚠️ " +
+        (
+          data.error ||
+          data.message ||
+          "AI server returned an error."
+        )
+      );
+
+      return;
+    }
+
+    if (!data.response) {
+
+      addAIMessage(
+        "⚠️ AI response was empty. Please try again."
+      );
+
+      return;
+    }
+
+    addAIMessage(data.response);
+
+  } catch (error) {
+
+    removeMessage(typingId);
+
+    console.error(
+      "MatrixFlowAI error:",
+      error
+    );
+
+    addAIMessage(
+      "⚠️ Connection error. Please try again."
+    );
+
+  } finally {
+
+    isSending = false;
+
+    sendBtn.disabled = false;
+
+    sendBtn.textContent = "↑";
+
+    input.focus();
+
+  }
+}
+
+
+function addUserMessage(text) {
+
+  const inner =
+    document.getElementById("messagesInner");
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "message user";
+
+  wrapper.innerHTML = `
+    <div>
+      <div class="bubble chat-user"></div>
+    </div>
+
+    <div class="message-avatar">
+      U
+    </div>
+  `;
+
+  wrapper
+    .querySelector(".bubble")
+    .textContent = text;
+
+  inner.appendChild(wrapper);
+
+  scrollChat();
+}
+
+
+function addAIMessage(text) {
+
+  const inner =
+    document.getElementById("messagesInner");
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "message";
+
+  wrapper.innerHTML = `
+    <div class="message-avatar">
+      M
+    </div>
+
+    <div>
+      <div class="bubble chat-ai"></div>
+
+      <div class="message-tools">
+
+        <button
+          class="message-tool"
+          onclick="copyMessage(this)">
+          Copy
+        </button>
+
+        <button
+          class="message-tool"
+          onclick="regenerateMessage()">
+          Regenerate
+        </button>
+
+      </div>
+    </div>
+  `;
+
+  wrapper
+    .querySelector(".bubble")
+    .textContent = text;
+
+  inner.appendChild(wrapper);
+
+  scrollChat();
+}
+
+
+function addTypingMessage() {
+
+  const inner =
+    document.getElementById("messagesInner");
+
+  const id =
+    "typing-" + Date.now();
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.className =
+    "message";
+
+  wrapper.id = id;
+
+  wrapper.innerHTML = `
+    <div class="message-avatar">
+      M
+    </div>
+
+    <div>
+      <div class="bubble chat-ai">
+
+        <div class="typing">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  inner.appendChild(wrapper);
+
+  scrollChat();
+
+  return id;
+}
+
+
+function removeMessage(id) {
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+    element.remove();
+  }
+}
+
+
+function scrollChat() {
+
+  const chat =
+    document.getElementById(
+      "chatMessages"
+    );
+
+  setTimeout(() => {
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  }, 30);
+}
+
+
+function copyMessage(button) {
+
+  const bubble =
+    button
+      .closest(".message")
+      .querySelector(".bubble");
+
+  navigator.clipboard
+    .writeText(
+      bubble.textContent
+    )
+    .then(() => {
+
+      showToast(
+        "Response copied"
+      );
+
+    })
+    .catch(() => {
+
+      showToast(
+        "Copy failed"
+      );
+
+    });
+}
+
+
+function regenerateMessage() {
+
+  const messages =
+    document.querySelectorAll(
+      "#messagesInner .message.user"
+    );
+
+  if (!messages.length) return;
+
+  const last =
+    messages[messages.length - 1]
+      .querySelector(".bubble")
+      .textContent;
+
+  document
+    .getElementById("promptInput")
+    .value = last;
+
+  updateCharCount();
+
+  sendMessage();
+}
+
+
+let toastTimer;
+
+
+function showToast(message) {
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent =
+    message;
+
+  toast.style.opacity = "1";
+
+  toast.style.transform =
+    "translate(-50%,0)";
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(() => {
+
+      toast.style.opacity = "0";
+
+      toast.style.transform =
+        "translate(-50%,20px)";
+
+    }, 2200);
+}
+
+
+updateCharCount();
+
+</script>
+
+</body>
+</html>
