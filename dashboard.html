@@ -1,579 +1,2175 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dashboard — MatrixFlowAI</title>
-<meta name="description" content="Your MatrixFlowAI dashboard.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050507" />
+  <title>MatrixFlowAI — AI Workspace</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<link rel="stylesheet" href="styles.css">
+    :root {
+      --bg: #050507;
+      --bg2: #09090d;
+      --panel: rgba(15, 15, 22, 0.72);
+      --panel2: rgba(20, 20, 29, 0.82);
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.13);
+      --text: #f8fafc;
+      --muted: #9297a5;
+      --muted2: #686d7b;
+      --accent: #8b5cf6;
+      --accent2: #6366f1;
+      --green: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 20px 80px rgba(0,0,0,.42);
+    }
 
-<style>
-/* ==============================
-   MATRIXFLOWAI CHATFLOW
-   ============================== */
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(99,102,241,.15), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(139,92,246,.12), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(59,130,246,.08), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-.chatflow{
-  margin-top:28px;
-  margin-bottom:35px;
-  padding:20px;
-  border:1px solid #e8e8ee;
-  border-radius:18px;
-  background:#fff;
-  box-shadow:0 8px 28px rgba(0,0,0,.05);
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+      z-index: -1;
+    }
 
-.chatflow h2{
-  margin:0 0 5px;
-}
+    button,
+    textarea,
+    input {
+      font: inherit;
+    }
 
-.chatflow-sub{
-  margin:0 0 16px;
-  color:#777;
-  font-size:14px;
-}
+    button {
+      cursor: pointer;
+    }
 
-.chat-messages{
-  height:360px;
-  overflow-y:auto;
-  padding:14px;
-  background:#f7f7f9;
-  border-radius:14px;
-  margin-bottom:12px;
-}
+    /* =========================
+       APP
+    ========================= */
 
-.chat-empty{
-  text-align:center;
-  color:#888;
-  padding-top:145px;
-}
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
 
-.chat-message{
-  max-width:85%;
-  padding:11px 14px;
-  border-radius:14px;
-  margin:8px 0;
-  line-height:1.5;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
+    /* =========================
+       SIDEBAR
+    ========================= */
 
-.chat-user{
-  margin-left:auto;
-  background:#111;
-  color:#fff;
-  border-bottom-right-radius:4px;
-}
+    .sidebar {
+      width: 270px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(7,7,10,.84);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-right: 1px solid var(--border);
+      transition: transform .3s ease;
+    }
 
-.chat-ai{
-  background:#111827;
-  color:#ffffff;
-  border:1px solid #374151;
-  border-bottom-left-radius:4px;
-  box-shadow:0 4px 18px rgba(0,0,0,.18);
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 7px 8px 22px;
+    }
 
-.chat-form{
-  display:flex;
-  gap:9px;
-}
+    .brand-logo {
+      width: 39px;
+      height: 39px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 17px;
+      background:
+        linear-gradient(135deg, #8b5cf6, #6366f1 55%, #3b82f6);
+      box-shadow:
+        0 0 25px rgba(99,102,241,.4),
+        inset 0 1px 0 rgba(255,255,255,.3);
+    }
 
-.chat-input{
-  flex:1;
-  min-height:48px;
-  max-height:140px;
-  resize:vertical;
-  border:1px solid #d9d9df;
-  border-radius:12px;
-  padding:12px;
-  font:inherit;
-  outline:none;
-}
+    .brand-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
 
-.chat-input:focus{
-  border-color:#777;
-}
+    .brand-name span {
+      background: linear-gradient(90deg,#a78bfa,#818cf8,#60a5fa);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
 
-.chat-send{
-  border:0;
-  border-radius:12px;
-  padding:0 19px;
-  background:#111;
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-}
+    .new-chat {
+      width: 100%;
+      border: 1px solid var(--border2);
+      background: rgba(255,255,255,.055);
+      color: white;
+      padding: 12px 14px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: .2s;
+      margin-bottom: 18px;
+    }
 
-.chat-send:hover{
-  opacity:.9;
-}
+    .new-chat:hover {
+      background: rgba(255,255,.1);
+      transform: translateY(-1px);
+    }
 
-.chat-send:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
+    .new-chat-icon {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg,#8b5cf6,#6366f1);
+      font-size: 17px;
+    }
 
-.chat-status{
-  min-height:18px;
-  margin-top:8px;
-  color:#777;
-  font-size:12px;
-}
+    .nav-label {
+      color: var(--muted2);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding: 8px 11px;
+      margin-top: 3px;
+    }
 
-/* ==============================
-   PREMIUM TOOL CARDS
-   ============================== */
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
 
-.product{
-  transition:
-    transform .2s ease,
-    box-shadow .2s ease,
-    border-color .2s ease;
-}
+    .nav-item {
+      border: 1px solid transparent;
+      background: transparent;
+      color: #aeb2be;
+      padding: 11px 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-align: left;
+      width: 100%;
+      transition: .2s;
+    }
 
-.product:hover{
-  transform:translateY(-3px);
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-}
+    .nav-item:hover {
+      background: rgba(255,255,255,.045);
+      color: white;
+    }
 
-/* ==============================
-   MOBILE
-   ============================== */
+    .nav-item.active {
+      color: white;
+      background: linear-gradient(
+        90deg,
+        rgba(139,92,246,.18),
+        rgba(99,102,241,.07)
+      );
+      border-color: rgba(139,92,246,.18);
+    }
 
-@media(max-width:600px){
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 17px;
+    }
 
-  .chatflow{
-    padding:14px;
-  }
+    .nav-text {
+      font-size: 13.5px;
+      font-weight: 600;
+    }
 
-  .chat-messages{
-    height:330px;
-  }
+    .soon {
+      margin-left: auto;
+      font-size: 9px;
+      padding: 3px 6px;
+      border-radius: 5px;
+      color: #a5a8b4;
+      background: rgba(255,255,255,.06);
+    }
 
-  .chat-form{
-    align-items:stretch;
-  }
+    .sidebar-bottom {
+      margin-top: auto;
+    }
 
-  .chat-send{
-    padding:0 14px;
-  }
+    .status-card {
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+      margin-bottom: 10px;
+    }
 
-  .chat-message{
-    max-width:92%;
-  }
-}
-</style>
+    .status-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(34,197,94,.8);
+    }
+
+    .status-sub {
+      color: var(--muted2);
+      font-size: 10px;
+      margin-top: 5px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg,#6366f1,#8b5cf6);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .profile-info {
+      overflow: hidden;
+    }
+
+    .profile-name {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .profile-plan {
+      color: var(--muted2);
+      font-size: 9px;
+      margin-top: 2px;
+    }
+
+    .main {
+      margin-left: 270px;
+      width: calc(100% - 270px);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .topbar {
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(5,5,7,.68);
+      backdrop-filter: blur(22px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .top-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .top-sub {
+      color: var(--muted2);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .icon-btn {
+      width: 37px;
+      height: 37px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      color: #cdd0d8;
+      display: grid;
+      place-items: center;
+      transition: .2s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255,255,255,.08);
+      color: white;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .view {
+      display: none;
+      animation: fadeIn .35s ease;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .home {
+      padding: 65px 35px 80px;
+      max-width: 1250px;
+      margin: auto;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto 48px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border: 1px solid rgba(139,92,246,.22);
+      background: rgba(139,92,246,.07);
+      color: #b9a4ff;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      background: #a78bfa;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #8b5cf6;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: .98;
+      letter-spacing: -4px;
+      font-weight: 850;
+      margin-bottom: 21px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        100deg,
+        #fff 10%,
+        #c4b5fd 40%,
+        #818cf8 70%,
+        #60a5fa
+      );
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: auto;
+      color: #9297a5;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1.35fr .8fr .8fr;
+      gap: 14px;
+    }
+
+    .feature-card {
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.065),
+        rgba(255,255,255,.018)
+      );
+      border-radius: 22px;
+      padding: 23px;
+      cursor: pointer;
+      transition: .3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139,92,246,.3);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-card.large {
+      min-height: 320px;
+    }
+
+    .feature-glow {
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .22;
+      right: -90px;
+      bottom: -110px;
+      background: #8b5cf6;
+    }
+
+    .feature-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid var(--border2);
+      margin-bottom: 28px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 7px;
+      letter-spacing: -.4px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      max-width: 400px;
+    }
+
+    .feature-arrow {
+      position: absolute;
+      right: 22px;
+      top: 22px;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.055);
+      display: grid;
+      place-items: center;
+      color: #bbb;
+    }
+
+    .feature-tag {
+      display: inline-block;
+      margin-top: 17px;
+      font-size: 9px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.06);
+      color: #aaaeba;
+    }
+
+    .chat-view {
+      height: calc(100vh - 68px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 20px 28px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-title {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .model-select {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.045);
+      color: #ddd;
+      border-radius: 10px;
+      padding: 8px 32px 8px 11px;
+      font-size: 11px;
+      outline: none;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 28px 30px;
+    }
+
+    .messages-inner {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .welcome-chat {
+      text-align: center;
+      padding: 10vh 20px 30px;
+    }
+
+    .welcome-orb {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 20px;
+      border-radius: 23px;
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+      background: linear-gradient(135deg,#8b5cf6,#6366f1);
+      box-shadow: 0 0 55px rgba(99,102,241,.25);
+    }
+
+    .welcome-chat h2 {
+      font-size: 27px;
+      letter-spacing: -.8px;
+      margin-bottom: 8px;
+    }
+
+    .welcome-chat p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 9px;
+      max-width: 650px;
+      margin: 28px auto;
+    }
+
+    .suggestion {
+      padding: 12px;
+      text-align: left;
+      color: #bbbfc9;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+      border-radius: 12px;
+      font-size: 11px;
+      transition: .2s;
+    }
+
+    .suggestion:hover {
+      border-color: rgba(139,92,246,.3);
+      background: rgba(139,92,246,.06);
+      color: white;
+    }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message-avatar {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 30px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    }
+
+    .message.user .message-avatar {
+      order: 2;
+    }
+
+    .bubble {
+      max-width: min(720px, 82%);
+      padding: 13px 15px;
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .chat-user {
+      background: linear-gradient(135deg,#312e81,#4338ca);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-ai {
+      background: #111827;
+      color: #ffffff;
+      border: 1px solid #374151;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.18);
+    }
+
+    .message-tools {
+      display: flex;
+      gap: 6px;
+      margin-top: 7px;
+    }
+
+    .message-tool {
+      border: 0;
+      background: transparent;
+      color: #6f7481;
+      font-size: 10px;
+      padding: 3px 5px;
+    }
+
+    .message-tool:hover {
+      color: white;
+    }
+
+    .typing {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px 0;
+    }
+
+    .typing span {
+      width: 5px;
+      height: 5px;
+      background: #9ca3af;
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .typing span:nth    .typing span:nth-child(3) {
+      animation-delay: .3s;
+    }
+
+    @keyframes bounce {
+      0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: .5;
+      }
+
+      30% {
+        transform: translateY(-5px);
+        opacity: 1;
+      }
+    }
+
+    .composer-wrap {
+      padding: 12px 28px 22px;
+    }
+
+    .composer {
+      max-width: 850px;
+      margin: auto;
+      position: relative;
+      border: 1px solid var(--border2);
+      background: rgba(13,13,18,.88);
+      border-radius: 18px;
+      box-shadow: 0 15px 60px rgba(0,0,0,.3);
+      transition: .2s;
+    }
+
+    .composer:focus-within {
+      border-color: rgba(139,92,246,.42);
+      box-shadow: 0 15px 70px rgba(99,102,241,.11);
+    }
+
+    .composer textarea {
+      width: 100%;
+      min-height: 62px;
+      max-height: 180px;
+      resize: none;
+      outline: none;
+      border: 0;
+      background: transparent;
+      color: white;
+      padding: 17px 58px 8px 17px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .composer textarea::placeholder {
+      color: #626774;
+    }
+
+    .send-btn {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 37px;
+      height: 37px;
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg,#8b5cf6,#6366f1);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      box-shadow: 0 6px 20px rgba(99,102,241,.3);
+      transition: .2s;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    .send-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .composer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 13px 9px;
+      color: #5f6470;
+      font-size: 9px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: auto;
+      padding: 55px 30px 80px;
+    }
+
+    .page-head {
+      margin-bottom: 35px;
+    }
+
+    .page-head h1 {
+      font-size: 38px;
+      letter-spacing: -1.8px;
+      margin-bottom: 9px;
+    }
+
+    .page-head p {
+      color: var(--muted);
+      font-size: 13px;
+       }    .video-builder {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.025);
+      border-radius: 24px;
+      padding: 22px;
+      min-height: 450px;
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 20px;
+    }
+
+    .video-preview {
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      min-height: 400px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(139,92,246,.12),
+          transparent 35%
+        ),
+        #08080c;
+    }
+
+    .preview-content {
+      text-align: center;
+      color: #696e7c;
+    }
+
+    .preview-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .video-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .control-label {
+      font-size: 11px;
+      color: #9297a5;
+      margin-bottom: 6px;
+    }
+
+    .control-box {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      border-radius: 12px;
+      padding: 12px;
+      color: #c7cad2;
+      font-size: 11px;
+    }
+
+    .video-prompt {
+      min-height: 130px;
+      resize: vertical;
+      width: 100%;
+      outline: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      border-radius: 12px;
+      padding: 12px;
+      color: white;
+    }
+
+    .primary-btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px;
+      color: white;
+      font-weight: 700;
+      background: linear-gradient(
+        135deg,
+        #8b5cf6,
+        #6366f1
+      );
+      box-shadow:
+        0 8px 25px rgba(99,102,241,.2);
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .coming-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 15px;
+    }
+
+    .coming-card {
+      padding: 24    @media (max-width: 650px) {
+
+      .home {
+        padding: 45px 16px 60px;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+        letter-spacing: -2.5px;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card.large {
+        grid-column: auto;
+      }
+
+      .feature-card,
+      .feature-card.large {
+        min-height: 190px;
+      }
+
+      .chat-header {
+        padding: 16px;
+      }
+
+      .chat-messages {
+        padding: 12px 16px 20px;
+      }
+
+      .composer-wrap {
+        padding: 8px 12px 15px;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome-chat {
+        padding-top: 6vh;
+      }
+
+      .bubble {
+        max-width: 87%;
+      }
+
+      .page {
+        padding: 35px 16px 60px;
+      }
+
+      .page-head h1 {
+        font-size: 31px;
+      }
+
+      .coming-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .video-builder {
+        padding: 13px;
+      }
+
+      .video-preview {
+        min-height: 260px;
+      }
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(3px);
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    ::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,.1);
+      border-radius: 20px;
+    }</style>
 </head>
 
-<body data-protected="true">
+<body>
 
-<header>
-  <div class="wrap">
+<div class="overlay" id="overlay"></div>
 
-    <nav>
+<div class="app">
 
-      <a class="brand" href="index.html">
-        〽 MatrixFlow<span>AI</span>
-      </a>
+  <aside class="sidebar" id="sidebar">
 
-      <div class="dash-user">
+    <div class="brand">
+      <div class="brand-logo">M</div>
+      <div class="brand-name">Matrix<span>FlowAI</span></div>
+    </div>
 
-        <span id="userEmail">
-          Loading...
-        </span>
+    <button class="new-chat" onclick="openChat(true)">
+      <span class="new-chat-icon">+</span>
+      <span>New conversation</span>
+    </button>
+
+    <div class="nav-label">Workspace</div>
+
+    <nav class="nav">
+
+      <button class="nav-item active"
+        data-view="home"
+        onclick="showView('home', this)">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">Overview</span>
+      </button>
+
+      <button class="nav-item"
+        data-view="chat"
+        onclick="showView('chat', this)">
+        <span class="nav-icon">✦</span>
+        <span class="nav-text">ChatFlow</span>
+      </button>
+
+      <button class="nav-item"
+        data-view="video"
+        onclick="showView('video', this)">
+        <span class="nav-icon">▶</span>
+        <span class="nav-text">VideoFlow</span>
+        <span class="soon">SOON</span>
+      </button>
+
+      <button class="nav-item"
+        data-view="write"
+        onclick="showView('write', this)">
+        <span class="nav-icon">✎</span>
+        <span class="nav-text">FlowWrite</span>
+        <span class="soon">SOON</span>
+      </button>
+
+      <button class="nav-item"
+        data-view="data"
+        onclick="showView('data', this)">
+        <span class="nav-icon">◈</span>
+        <span class="nav-text">DataMind</span>
+        <span class="soon">SOON</span>
+      </button>
+
+    </nav>
+
+    <div class="nav-label" style="margin-top:15px;">
+      System
+    </div>
+
+    <nav class="nav">
+
+      <button class="nav-item"
+        onclick="showToast('AI Models coming soon')">
+        <span class="nav-icon">◎</span>
+        <span class="nav-text">AI Models</span>
+      </button>
+
+      <button class="nav-item"
+        onclick="showToast('Settings coming soon')">
+        <span class="nav-icon">⚙</span>
+        <span class="nav-text">Settings</span>
+      </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <div class="status-card">
+
+        <div class="status-title">
+          <span class="status-dot"></span>
+          MatrixFlowAI Online
+        </div>
+
+        <div class="status-sub">
+          AI systems are ready
+        </div>
+
+      </div>
+
+      <div class="profile">
+
+        <div class="avatar">M</div>
+
+        <div class="profile-info">
+          <div class="profile-name">
+            Matrix User
+          </div>
+
+          <div class="profile-plan">
+            Free workspace
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div style="display:flex;align-items:center;gap:11px;">
 
         <button
-          id="logoutBtn"
-          class="ghost"
-          type="button">
-          Log out
+          class="icon-btn mobile-menu"
+          onclick="toggleSidebar()">
+          ☰
+        </button>
+
+        <div>
+
+          <div class="top-title" id="topTitle">
+            Overview
+          </div>
+
+          <div class="top-sub">
+            Your intelligent workspace
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button
+          class="icon-btn"
+          onclick="showToast('Notifications coming soon')">
+          ♢
+        </button>
+
+        <button
+          class="icon-btn"
+          onclick="showToast('Settings coming soon')">
+          ⚙
         </button>
 
       </div>
 
-    </nav>
-
-  </div>
-</header>
+    </header>
 
 
-<div id="authGate" class="auth-gate">
-  Checking your account...
+    <!-- OVERVIEW -->
+
+    <section
+      class="view active"
+      id="view-home">
+
+      <div class="home">
+
+        <div class="hero">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            NEXT-GENERATION AI WORKSPACE
+          </div>
+
+          <h1>
+            One workspace.<br>
+            <span class="gradient-text">
+              Infinite possibilities.
+            </span>
+          </h1>
+
+          <p>
+            Create, think, write and transform ideas
+            with MatrixFlowAI. Your unified AI workspace
+            for the future.
+          </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+          <div
+            class="feature-card large"
+            onclick="showView('chat')">
+
+            <div class="feature-glow"></div>
+
+            <div class="feature-arrow">
+              ↗
+            </div>
+
+            <div class="feature-icon">
+              ✦
+            </div>
+
+            <h3>
+              ChatFlow
+            </h3>
+
+            <p>
+              Talk with advanced AI models, brainstorm
+              ideas, solve problems, write code and get
+              intelligent answers.
+            </p>
+
+            <span class="feature-tag">
+              OPENROUTER • LIVE
+            </span>
+
+          </div>
+
+
+          <div
+            class="feature-card"
+            onclick="showView('video')">
+
+            <div class="feature-icon">
+              ▶
+            </div>
+
+            <h3>
+              VideoFlow
+            </h3>
+
+            <p>
+              Turn simple ideas and prompts into
+              cinematic AI videos.
+            </p>
+
+            <span class="feature-tag">
+              COMING SOON
+            </span>
+
+          </div>
+
+
+          <div
+            class="feature-card"
+            onclick="showView('write')">
+
+            <div class="feature-icon">
+              ✎
+            </div>
+
+            <h3>
+              FlowWrite
+            </h3>
+
+            <p>
+              Create blogs, scripts, ads and
+              professional content.
+            </p>
+
+            <span class="feature-tag">
+              COMING SOON
+            </span>
+
+          </div>
+
+
+          <div
+            class="feature-card"
+            onclick="showView('data')">
+
+            <div class="feature-icon">
+              ◈
+            </div>
+
+            <h3>
+              DataMind
+            </h3>
+
+            <p>
+              Analyze documents, datasets and
+              information with AI.
+            </p>
+
+            <span class="feature-tag">
+              COMING SOON
+            </span>
+
+          </div>
+
+
+          <div class="feature-card">
+
+            <div class="feature-icon">
+              ◎
+            </div>
+
+            <h3>
+              AI Models
+            </h3>
+
+            <p>
+              One place for leading AI models and
+              intelligent tools.
+            </p>
+
+            <span class="feature-tag">
+              EXPANDING
+            </span>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CHATFLOW -->
+
+    <section
+      class="view"
+      id="view-chat">
+
+      <div class="chat-view">
+
+
+        <div class="chat-header">
+
+          <div>
+
+            <div class="chat-title">
+              ChatFlow
+            </div>
+
+            <div
+              style="
+                color:#686d7b;
+                font-size:10px;
+                margin-top:3px;
+              ">
+              Powered by MatrixFlowAI
+            </div>
+
+          </div>
+
+
+          <select
+            class="model-select"
+            id="modelSelect">
+
+            <option value="openrouter/free">
+              Auto • Best available
+            </option>
+
+            <option value="openrouter/free">
+              OpenRouter Free
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div
+          class="chat-messages"
+          id="chatMessages">
+
+          <div
+            class="messages-inner"
+            id="messagesInner">
+
+
+            <div
+              class="welcome-chat"
+              id="welcomeChat">
+
+              <div class="welcome-orb">
+                ✦
+              </div>
+
+              <h2>
+                How can I help you?
+              </h2>
+
+              <p>
+                Ask anything. Build anything.
+                Think bigger.
+              </p>
+
+
+              <div class="suggestions">
+
+                <button
+                  class="suggestion"
+                  onclick="useSuggestion(
+                    'Explain artificial intelligence in simple words'
+                  )">
+
+                  ✦ Explain something to me
+
+                </button>
+
+
+                <button
+                  class="suggestion"
+                  onclick="useSuggestion(
+                    'Give me 10 creative startup ideas'
+                  )">
+
+                  ◈ Generate creative ideas
+
+                </button>
+
+
+                <button
+                  class="suggestion"
+                  onclick="useSuggestion(
+                    'Write a professional website landing page'
+                  )">
+
+                  ✎ Write something
+
+                </button>
+
+
+                <button
+                  class="suggestion"
+                  onclick="useSuggestion(
+                    'Create a roadmap for learning AI'
+                  )">
+
+                  ◎ Make a roadmap
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="composer-wrap">
+
+          <div class="composer">
+
+            <textarea
+              id="promptInput"
+              placeholder="Message MatrixFlowAI..."
+              rows="1"
+              onkeydown="handleInputKey(event)"
+            ></textarea>
+
+
+            <button
+              class="send-btn"
+              id="sendBtn"
+              onclick="sendMessage()">
+
+              ↑
+
+            </button>
+
+
+            <div class="composer-bottom">
+
+              <span>
+                AI can make mistakes.
+                Verify important information.
+              </span>
+
+              <span id="charCount">
+                0
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- VIDEOFLOW -->
+
+    <section
+      class="view"
+      id="view-video">
+
+      <div class="page">
+
+        <div class="page-head">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            VIDEOFLOW
+          </div>
+
+          <h1>
+            Imagine it.
+            <span class="gradient-text">
+              See it.
+            </span>
+          </h1>
+
+          <p>
+            AI video creation workspace
+            for MatrixFlowAI.
+          </p>
+
+        </div>
+
+
+        <div class="video-builder">
+
+
+          <div class="video-preview">
+
+            <div class="preview-content">
+
+              <div class="preview-icon">
+                ▶
+              </div>
+
+              <div>
+                Video preview will appear here
+              </div>
+
+              <div
+                style="
+                  font-size:10px;
+                  margin-top:6px;
+                ">
+
+                Video generation engine
+                coming soon
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="video-controls">
+
+            <div>
+
+              <div class="control-label">
+                Prompt
+              </div>
+
+              <textarea
+                class="video-prompt"
+                placeholder="Describe the video you want to create..."
+              ></textarea>
+
+            </div>
+
+
+            <div>
+
+              <div class="control-label">
+                Aspect ratio
+              </div>
+
+              <div class="control-box">
+                16:9 • Cinematic
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="control-label">
+                Duration
+              </div>
+
+              <div class="control-box">
+                10 seconds
+              </div>
+
+            </div>
+
+
+            <button
+              class="primary-btn"
+              onclick="showToast(
+                'Video engine coming soon'
+              )">
+
+              ✦ Generate Video
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FLOWWRITE -->
+
+    <section
+      class="view"
+      id="view-write">
+
+      <div class="page">
+
+        <div class="page-head">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            FLOWWRITE
+          </div>
+
+          <h1>
+            Create words that
+            <span class="gradient-text">
+              flow.
+            </span>
+          </h1>
+
+          <p>
+            Your AI writing studio.
+          </p>
+
+        </div>
+
+
+        <div class="coming-grid">
+
+          <div class="coming-card">
+
+            <div class="coming-card-icon">
+              ✎
+            </div>
+
+            <h3>
+              Content Studio
+            </h3>
+
+            <p>
+              Generate blogs, articles, social posts
+              and marketing content.
+            </p>
+
+          </div>
+
+
+          <div class="coming-card">
+
+            <div class="coming-card-icon">
+              ◇
+            </div>
+
+            <h3>
+              Creative Writing
+            </h3>
+
+            <p>
+              Stories, scripts, concepts and
+              creative brainstorming.
+            </p>
+
+          </div>
+
+
+          <div class="coming-card">
+
+            <div class="coming-card-icon">
+              ◎
+            </div>
+
+            <h3>
+              Professional
+            </h3>
+
+            <p>
+              Emails, proposals, reports and
+              business communication.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DATAMIND -->
+
+    <section
+      class="view"
+      id="view-data">
+
+      <div class="page">
+
+        <div class="page-head">
+
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            DATAMIND
+          </div>
+
+          <h1>
+            Turn data into
+            <span class="gradient-text">
+              insight.
+            </span>
+          </h1>
+
+          <p>
+            Analyze documents, datasets and
+            information with AI.
+          </p>
+
+        </div>
+
+
+        <div class="coming-grid">
+
+          <div class="coming-card">
+
+            <div class="coming-card-icon">
+              ▣
+            </div>
+
+            <h3>
+              Document Analysis
+            </h3>
+
+            <p>
+              Upload documents and ask questions
+              about their contents.
+            </p>
+
+          </div>
+
+
+          <div class="coming-card">
+
+            <div class="coming-card-icon">
+              ▥
+            </div>
+
+            <h3>
+              Data Analysis
+            </h3>
+
+            <p>
+              Explore datasets and discover
+              patterns automatically.
+            </p>
+
+          </div>
+
+
+          <div class="coming-card">
+
+            <div class="coming-card-icon">
+              ◫
+            </div>
+
+            <h3>
+              Visual Insights
+            </h3>
+
+            <p>
+              Turn complex information into
+              clear visual insights.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
 </div>
 
 
-<main id="appContent" hidden>
+<div
+  id="toast"
+  style="
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,20px);
+    opacity:0;
+    pointer-events:none;
+    z-index:500;
+    padding:11px 15px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;
+    background:rgba(18,18,24,.94);
+    color:white;
+    font-size:11px;
+    box-shadow:0 15px 50px rgba(0,0,0,.4);
+    transition:.25s;
+  "
+></div>
 
-  <!-- HERO -->
-
-  <section class="page-hero dashboard-hero">
-
-    <div class="wrap">
-
-      <span class="eyebrow">
-        YOUR DASHBOARD
-      </span>
-
-      <h1>
-        Welcome to
-        <span class="grad">
-          MatrixFlowAI
-        </span>
-      </h1>
-
-      <p>
-        Your account is active. ChatFlow is ready to use.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- AI CHAT -->
-
-  <section>
-
-    <div class="wrap">
-
-      <div class="chatflow">
-
-        <h2>
-          💬 ChatFlow
-        </h2>
-
-        <p class="chatflow-sub">
-          Your AI chat workspace — powered by MatrixFlow AI.
-        </p>
-
-
-        <div
-          id="chatMessages"
-          class="chat-messages">
-
-          <div
-            id="chatEmpty"
-            class="chat-empty">
-
-            Ask anything to start chatting.
-
-          </div>
-
-        </div>
-
-
-        <form
-          id="chatForm"
-          class="chat-form">
-
-          <textarea
-            id="chatInput"
-            class="chat-input"
-            placeholder="Message MatrixFlow AI..."
-            required></textarea>
-
-          <button
-            id="chatSend"
-            class="chat-send"
-            type="submit">
-
-            Send
-
-          </button>
-
-        </form>
-
-
-        <div
-          id="chatStatus"
-          class="chat-status">
-        </div>
-
-      </div>
-
-
-      <!-- OTHER AI TOOLS -->
-
-      <div class="grid">
-
-        <div class="card product">
-
-          <div class="icon">
-            ✦
-          </div>
-
-          <h3>
-            FlowWrite
-          </h3>
-
-          <p>
-            AI-assisted writing tools for content,
-            drafts and summaries.
-          </p>
-
-          <span class="product-action">
-            Coming soon
-          </span>
-
-        </div>
-
-
-        <div class="card product">
-
-          <div class="icon">
-            ▥
-          </div>
-
-          <h3>
-            DataMind
-          </h3>
-
-          <p>
-            Turn information and data into clearer
-            insights.
-          </p>
-
-          <span class="product-action">
-            Coming soon
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-</main>
-
-
-<!-- AUTH -->
-
-<script
-  type="module"
-  src="auth.js">
-</script>
-
-
-<!-- CHATFLOW -->
 
 <script>
 
 const MATRIXFLOW_WORKER =
   "https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
 
-
-const chatForm =
-  document.getElementById("chatForm");
-
-const chatInput =
-  document.getElementById("chatInput");
-
-const chatSend =
-  document.getElementById("chatSend");
-
-const chatMessages =
-  document.getElementById("chatMessages");
-
-const chatStatus =
-  document.getElementById("chatStatus");
-
-const chatEmpty =
-  document.getElementById("chatEmpty");
+let isSending = false;
 
 
-function addChatMessage(text, type){
+const viewTitles = {
+  home: "Overview",
+  chat: "ChatFlow",
+  video: "VideoFlow",
+  write: "FlowWrite",
+  data: "DataMind"
+};
 
-  if(chatEmpty){
-    chatEmpty.remove();
+
+function showView(view, clickedButton) {
+
+  document.querySelectorAll(".view")
+    .forEach(el => {
+      el.classList.remove("active");
+    });
+
+
+  const target =
+    document.getElementById("view-" + view);
+
+  if (target) {
+    target.classList.add("active");
   }
 
 
-  const message =
-    document.createElement("div");
+  document.querySelectorAll(".nav-item")
+    .forEach(el => {
+      el.classList.remove("active");
+    });
 
 
-  message.className =
-    "chat-message " +
-    (type === "user"
-      ? "chat-user"
-      : "chat-ai");
+  if (clickedButton) {
+
+    clickedButton.classList.add("active");
+
+  } else {
+
+    const nav =
+      document.querySelector(
+        '.nav-item[data-view="' + view + '"]'
+      );
+
+    if (nav) {
+      nav.classList.add("active");
+    }
+
+  }
 
 
-  message.textContent = text;
+  document.getElementById("topTitle")
+    .textContent =
+    viewTitles[view] || "MatrixFlowAI";
 
 
-  chatMessages.appendChild(message);
+  closeSidebar();
+}
 
 
-  chatMessages.scrollTop =
-    chatMessages.scrollHeight;
+function openChat(clearChat) {
+
+  showView("chat");
+
+
+  if (clearChat) {
+    clearConversation();
+  }
+
+
+  setTimeout(() => {
+
+    document
+      .getElementById("promptInput")
+      .focus();
+
+  }, 100);
 
 }
 
 
-chatForm.addEventListener(
-  "submit",
-  async function(event){
+function toggleSidebar() {
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+  document
+    .getElementById("overlay")
+    .classList.toggle("show");
+
+}
+
+
+function closeSidebar() {
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  document
+    .getElementById("overlay")
+    .classList.remove("show");
+
+}
+
+
+document
+  .getElementById("overlay")
+  .addEventListener(
+    "click",
+    closeSidebar
+  );
+
+
+function clearConversation() {
+
+  const inner =
+    document.getElementById("messagesInner");
+
+
+  inner.innerHTML = `
+
+    <div
+      class="welcome-chat"
+      id="welcomeChat">
+
+      <div class="welcome-orb">
+        ✦
+      </div>
+
+      <h2>
+        How can I help you?
+      </h2>
+
+      <p>
+        Ask anything. Build anything.
+        Think bigger.
+      </p>
+
+      <div class="suggestions">
+
+        <button
+          class="suggestion"
+          onclick="useSuggestion(
+            'Explain artificial intelligence in simple words'
+          )">
+
+          ✦ Explain something to me
+
+        </button>
+
+        <button
+          class="suggestion"
+          onclick="useSuggestion(
+            'Give me 10 creative startup ideas'
+          )">
+
+          ◈ Generate creative ideas
+
+        </button>
+
+        <button
+          class="suggestion"
+          onclick="useSuggestion(
+            'Write a professional website landing page'
+          )">
+
+          ✎ Write something
+
+        </button>
+
+        <button
+          class="suggestion"
+          onclick="useSuggestion(
+            'Create a roadmap for learning AI'
+          )">
+
+          ◎ Make a roadmap
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+function useSuggestion(text) {
+
+  const input =
+    document.getElementById("promptInput");
+
+  input.value = text;
+
+  updateCharCount();
+
+  openChat(false);
+
+  sendMessage();
+
+}
+
+
+function handleInputKey(event) {
+
+  if (
+    event.key === "Enter" &&
+    !event.shiftKey
+  ) {
 
     event.preventDefault();
 
+    sendMessage();
 
-    const prompt =
-      chatInput.value.trim();
+  }
 
-
-    if(
-      !prompt ||
-      chatSend.disabled
-    ){
-      return;
-    }
+}
 
 
-    addChatMessage(
-      prompt,
-      "user"
-    );
+function updateCharCount() {
+
+  const input =
+    document.getElementById("promptInput");
+
+  document.getElementById("charCount")
+    .textContent =
+    input.value.length;
+
+}
 
 
-    chatInput.value = "";
+document
+  .getElementById("promptInput")
+  .addEventListener(
+    "input",
+    updateCharCount
+  );
 
 
-    chatSend.disabled = true;
+async function sendMessage() {
+
+  if (isSending) return;
 
 
-    chatStatus.textContent =
-      "Thinking...";
+  const input =
+    document.getElementById("promptInput");
+
+  const prompt =
+    input.value.trim();
 
 
-    try{
-
-      const response =
-        await fetch(
-          MATRIXFLOW_WORKER,
-          {
-            method:"POST",
-
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
-
-            body:JSON.stringify({
-              prompt:prompt
-            })
-          }
-        );
+  if (!prompt) return;
 
 
-      const data =
-        await response
-          .json()
-          .catch(() => null);
+  isSending = true;
 
 
-      if(!response.ok){
-
-        let errorText =
-          "AI request failed (" +
-          response.status +
-          ")";
+  const sendBtn =
+    document.getElementById("sendBtn");
 
 
-        if(
-          data &&
-          data.error
-        ){
+  sendBtn.disabled = true;
+  sendBtn.textContent = "…";
 
-          errorText =
-            typeof data.error === "string"
-              ? data.error
-              : JSON.stringify(data.error);
 
+  const welcome =
+    document.getElementById("welcomeChat");
+
+
+  if (welcome) {
+    welcome.remove();
+  }
+
+
+  addUserMessage(prompt);
+
+
+  input.value = "";
+
+  updateCharCount();
+
+
+  const typingId =
+    addTypingMessage();
+
+
+  try {
+
+    const response =
+      await fetch(
+        MATRIXFLOW_WORKER,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            prompt: prompt
+          })
         }
-
-
-        throw new Error(
-          errorText
-        );
-
-      }
-
-
-      const answer =
-        data && data.response
-          ? data.response
-          : "No response received from MatrixFlow AI.";
-
-
-      addChatMessage(
-        answer,
-        "ai"
       );
 
 
-      chatStatus.textContent = "";
+    let data = {};
 
 
-    }catch(error){
+    try {
 
-      console.error(
-        "ChatFlow error:",
-        error
+      data =
+        await response.json();
+
+    } catch (e) {
+
+      throw new Error(
+        "Invalid server response"
       );
-
-
-      addChatMessage(
-        "Connection error: " +
-        (
-          error.message ||
-          "Unable to reach MatrixFlow AI."
-        ),
-        "ai"
-      );
-
-
-      chatStatus.textContent =
-        "Please try again.";
-
-
-    }finally{
-
-      chatSend.disabled = false;
-
-      chatInput.focus();
 
     }
 
-  }
-);
+
+    removeMessage(typingId);
 
 
-chatInput.addEventListener(
-  "keydown",
-  function(event){
-
-    if(
-      event.key === "Enter" &&
-      !event.shiftKey
-    ){
-
-      event.preventDefault();
-
-      chatForm.requestSubmit();
-
-    }
-
-  }
-);
-
-</script>
-
-</body>
-  </html>
+    if (!respons
