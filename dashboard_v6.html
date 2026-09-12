@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MatrixFlowAI — V6</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#05070d;--panel:rgba(9,13,24,.86);--line:#202b43;--text:#eef3ff;--muted:#8491ad;--accent:#6ea8ff;--accent2:#9b7bff}
+html,body{margin:0;width:100%;height:100%;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text);overflow:hidden}
+button,input,textarea,select{font:inherit}
+.app{height:100vh;display:flex;background:radial-gradient(circle at 50% -10%,#1b2c59 0,#080b15 36%,#04050a 100%)}
+aside{width:250px;border-right:1px solid var(--line);background:rgba(7,10,19,.9);backdrop-filter:blur(22px);padding:18px;display:flex;flex-direction:column;gap:18px;z-index:5}
+.logo{font-size:20px;font-weight:850;letter-spacing:.4px}.logo span{color:var(--accent)}
+.status{font-size:11px;color:#72f5bd;margin-top:4px}
+.nav button,.sidebtn{width:100%;border:1px solid #222c43;background:#0c1120;color:#cbd5ee;border-radius:13px;padding:12px;text-align:left;margin:4px 0;cursor:pointer;transition:.2s}
+.nav button:hover{border-color:#3a537e;transform:translateY(-1px)}
+.nav button.active{background:linear-gradient(135deg,#15264d,#10182c);border-color:#3769bc;color:#fff;box-shadow:0 8px 28px #0005}
+.bottom{margin-top:auto;font-size:11px;color:#77829b;line-height:1.6}
+main{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{height:66px;flex:0 0 66px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(6,9,16,.58);backdrop-filter:blur(16px);z-index:4}
+.badge{border:1px solid #273451;border-radius:999px;padding:7px 11px;font-size:11px;color:#9db0d5}
+.web{display:flex;align-items:center;gap:8px;font-size:12px;color:#a9b5cf}.web input{accent-color:var(--accent)}
+.view{flex:1;min-height:0;display:none}.view.active{display:flex}
+.chat{flex-direction:column;max-width:1120px;width:100%;margin:auto}
+.messages{flex:1;overflow:auto;padding:28px 24px 145px;scroll-behavior:smooth}
+.msg{max-width:820px;margin:0 auto 18px;line-height:1.6;animation:in .18s ease}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.user{margin-left:auto;background:#121b30;border:1px solid #26375a;border-radius:18px 18px 5px;padding:12px 15px;width:max-content;max-width:82%;white-space:pre-wrap}
+.ai{background:rgba(12,16,27,.72);border:1px solid #1d2940;border-radius:18px;padding:15px;white-space:pre-wrap}
+.typing:after{content:"";display:inline-block;width:7px;height:7px;margin-left:5px;border-radius:50%;background:var(--accent);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.2}}
+.composer{position:fixed;bottom:18px;left:calc(250px + (100% - 250px)/2 - 440px);width:880px;max-width:calc(100% - 290px);display:flex;gap:9px;padding:10px;background:rgba(10,14,24,.94);border:1px solid #2a3650;border-radius:20px;box-shadow:0 18px 60px #0008;backdrop-filter:blur(18px);z-index:10}
+textarea{flex:1;resize:none;background:transparent;border:0;outline:0;color:#fff;padding:12px;font-size:14px}
+#prompt{height:46px}
+button.send{width:48px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--accent),#8d78ff);color:#07101f;font-weight:900;cursor:pointer}
+button.send:disabled{opacity:.45;cursor:wait}
+.video{width:100%;padding:28px;overflow:auto}
+.hero{max-width:1160px;width:100%;margin:auto}
+.hero h1{font-size:34px;margin:0 0 8px}.hero p{color:#8e9bb6;margin-top:0}
+.videohead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.video-status{font-size:11px;color:#72f5bd;border:1px solid #24543f;background:#0a1a14;padding:7px 10px;border-radius:999px}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.card{background:rgba(10,15,27,.8);border:1px solid #222e47;border-radius:20px;padding:20px;box-shadow:0 18px 60px #0003}
+.card label{display:block;font-size:12px;color:#94a3c3;margin:14px 0 7px}
+.card input,.card select,.card textarea{width:100%;background:#0b1020;color:#fff;border:1px solid #283550;border-radius:11px;padding:12px;outline:none}
+.card input:focus,.card select:focus,.card textarea:focus{border-color:#4e78bd}
+#vp{height:150px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.generate{margin-top:18px;width:100%;padding:14px;border:0;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));font-weight:850;cursor:pointer}
+.generate:disabled{opacity:.55;cursor:wait}
+.preview{min-height:370px;border:1px dashed #34425f;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#65728e;text-align:center;padding:20px;overflow:hidden;background:rgba(5,8,15,.55)}
+.preview video{width:100%;max-height:520px;border-radius:12px;background:#000}
+.note{font-size:11px;color:#71809e;margin-top:12px;line-height:1.5}
+.jobline{font-size:12px;color:#9aa8c4;margin-top:12px;min-height:18px}
+.small{font-size:11px;color:#7785a0}
+.download{display:inline-block;margin-top:12px;padding:9px 12px;border:1px solid #38547f;border-radius:10px;color:#dce8ff;text-decoration:none;background:#0c1425}
+@media(max-width:800px){
+ aside{width:72px;padding:12px 8px}.logo{font-size:0}.logo:after{content:"MF";font-size:18px}
+ .nav button{font-size:0;text-align:center}.nav button:before{font-size:18px}.nav button:nth-child(1):before{content:"⌁"}.nav button:nth-child(2):before{content:"▶"}
+ .bottom{display:none}.top{padding:0 12px}.composer{left:84px;max-width:calc(100% - 96px);width:auto}
+ .grid{grid-template-columns:1fr}.messages{padding-left:12px;padding-right:12px}.video{padding:16px}.row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div><div class="logo">MatrixFlow<span>AI</span></div><div class="status">● V6 ONLINE</div></div>
+  <div class="nav">
+    <button class="active" data-view="chat">ChatFlow</button>
+    <button data-view="video">VideoFlow</button>
+  </div>
+  <div class="bottom">Fast streaming • Context aware<br>Free-first video routing<br>Provider-ready pipeline</div>
+</aside>
+
+<main>
+<header class="top">
+  <strong id="title">ChatFlow</strong>
+  <div class="web"><label for="webToggle">Smart Web</label><input id="webToggle" type="checkbox"></div>
+</header>
+
+<section id="chat" class="view active chat">
+  <div id="messages" class="messages"></div>
+  <div class="composer">
+    <textarea id="prompt" placeholder="Ask anything…"></textarea>
+    <button class="send" id="send" aria-label="Send">➤</button>
+  </div>
+</section>
+
+<section id="video" class="view video">
+<div class="hero">
+  <div class="videohead">
+    <div><h1>🎬 VideoFlow</h1><p>Prompt → AI video → playable result. The Worker keeps provider keys private.</p></div>
+    <div class="video-status">● FREE-FIRST</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <label>Video prompt</label>
+      <textarea id="vp" placeholder="Example: A cinematic drone shot over a futuristic Indian city at sunset, realistic lighting, smooth camera movement…"></textarea>
+
+      <div class="row">
+        <div>
+          <label>Model</label>
+          <select id="model">
+            <option value="alibaba/wan-2.6:free">Wan 2.6 — Free • 1080p</option>
+            <option value="google/veo-3.1-lite:free">Veo 3.1 Lite — Free • 1080p</option>
+            <option value="openai/sora-2-pro:free">Sora 2 Pro — Free* </option>
+          </select>
+        </div>
+        <div>
+          <label>Quality target</label>
+          <select id="quality">
+            <option value="1080p">1080p</option>
+            <option value="4K">4K target</option>
+            <option value="8K">8K target</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Aspect ratio</label>
+          <select id="ratio"><option>16:9</option><option>9:16</option><option>1:1</option></select>
+        </div>
+        <div>
+          <label>Duration</label>
+          <select id="duration"><option value="4">4 sec</option><option value="6">6 sec</option><option value="8" selected>8 sec</option></select>
+        </div>
+      </div>
+
+      <button class="generate" id="generate">Generate Video</button>
+      <div class="jobline" id="jobline"></div>
+      <div class="note">
+        Free video endpoints are rate-limited. 4K/8K here is an <b>upscale target</b>; the current free models generate up to 1080p natively. We will add a real upscale/export pipeline next.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="preview" id="preview">Your rendered video will appear here.<br><br><span class="small">Generation is asynchronous and may take a while.</span></div>
+    </div>
+  </div>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+const WORKER_URL="https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
+const $=id=>document.getElementById(id);
+let history=[];
+try{history=JSON.parse(localStorage.getItem("mf_history")||"[]")}catch{history=[]}
+history=Array.isArray(history)?history.slice(-18):[];
+
+function add(text,who,scroll=true){
+ const wrap=document.createElement("div");wrap.className="msg";
+ const b=document.createElement("div");b.className=who==="user"?"user":"ai";b.textContent=text;
+ wrap.appendChild(b);$("messages").appendChild(wrap);
+ if(scroll)$("messages").scrollTop=$("messages").scrollHeight;
+ return b;
+}
+function save(){history=history.slice(-18);localStorage.setItem("mf_history",JSON.stringify(history))}
+function renderHistory(){
+ $("messages").replaceChildren();
+ if(!history.length){
+   add("👋 MatrixFlowAI V6 ready. I remember recent context, and answers stream live. Turn Smart Web on only when you need fresh/current information.","ai");
+   return;
+ }
+ history.slice(-18).forEach(m=>add(m.content,m.role==="user"?"user":"ai",false));
+ $("messages").scrollTop=$("messages").scrollHeight;
+}
+async function send(){
+ const p=$("prompt").value.trim(); if(!p)return;
+ $("prompt").value="";
+ add(p,"user");
+ const box=add("","ai");box.classList.add("typing");
+ $("send").disabled=true;
+ history.push({role:"user",content:p});save();
+
+ try{
+  const r=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({prompt:p,history,webSearch:$("webToggle").checked})});
+  if(!r.ok) throw new Error("Worker error "+r.status);
+  const type=r.headers.get("content-type")||"";
+  if(type.includes("text/event-stream")){
+    const reader=r.body.getReader(),dec=new TextDecoder();let buf="";
+    while(true){
+      const {value,done}=await reader.read();if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      const parts=buf.split("\\n\\n");buf=parts.pop();
+      for(const part of parts){
+        const line=part.split("\\n").find(x=>x.startsWith("data:"));
+        if(!line)continue;
+        try{
+          const d=JSON.parse(line.slice(5).trim());
+          if(d.type==="delta"){box.classList.remove("typing");box.textContent+=d.delta;$("messages").scrollTop=$("messages").scrollHeight}
+          if(d.type==="error"){box.classList.remove("typing");box.textContent="⚠️ "+d.error}
+        }catch{}
+      }
+    }
+  }else{
+    const d=await r.json();box.textContent=d.response||d.error||"No response";
+  }
+  box.classList.remove("typing");
+  history.push({role:"assistant",content:box.textContent});save();
+ }catch(e){
+  box.classList.remove("typing");box.textContent="⚠️ "+e.message;
+  history.push({role:"assistant",content:box.textContent});save();
+ }
+ $("send").disabled=false;
+ $("prompt").focus();
+}
+
+async function generateVideo(){
+ const prompt=$("vp").value.trim();if(!prompt){alert("Video prompt likho");return}
+ const btn=$("generate"),preview=$("preview"),jobline=$("jobline");
+ btn.disabled=true;preview.innerHTML="⏳ <b>Creating video job…</b><br><br><span class='small'>Model: "+$("model").value+"</span>";jobline.textContent="";
+ try{
+   const r=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({
+       action:"video",prompt,model:$("model").value,quality:$("quality").value,
+       aspectRatio:$("ratio").value,duration:Number($("duration").value)
+     })});
+   const d=await r.json();
+   if(!r.ok)throw new Error(d.error||"Video request failed");
+   if(!d.jobId)throw new Error("No video job ID returned");
+   jobline.textContent="Job "+d.jobId+" • status: "+(d.status||"pending");
+   await pollVideo(d.jobId);
+ }catch(e){
+   preview.innerHTML="⚠️ <b>Video generation failed</b><br><br>"+escapeHtml(e.message);
+   jobline.textContent="";
+ }finally{btn.disabled=false}
+}
+async function pollVideo(jobId){
+ const preview=$("preview"),jobline=$("jobline");
+ const max=80;
+ for(let i=0;i<max;i++){
+   await new Promise(r=>setTimeout(r,i===0?1500:7000));
+   const r=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"video_status",jobId})});
+   const d=await r.json();
+   if(!r.ok)throw new Error(d.error||"Status check failed");
+   jobline.textContent="Job "+jobId+" • "+(d.status||"checking")+" • check "+(i+1)+"/"+max;
+   if(d.status==="completed"&&d.videoUrl){
+     const v=document.createElement("video");v.controls=true;v.playsInline=true;v.src=d.videoUrl;
+     preview.replaceChildren(v);
+     const a=document.createElement("a");a.className="download";a.href=d.videoUrl;a.target="_blank";a.rel="noopener";a.textContent="Open video";
+     preview.appendChild(a);
+     jobline.textContent="✅ Video ready";
+     return;
+   }
+   if(["failed","cancelled","expired"].includes(d.status))throw new Error(d.error||("Video job "+d.status));
+ }
+ throw new Error("Generation is taking longer than expected. Job ID: "+jobId);
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+
+$("send").onclick=send;
+$("prompt").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}});
+$("generate").onclick=generateVideo;
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+ document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));$(b.dataset.view).classList.add("active");
+ $("title").textContent=b.textContent;
+});
+renderHistory();
+</script>
+</body>
+</html>
