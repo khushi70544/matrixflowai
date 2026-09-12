@@ -2,76 +2,88 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>MatrixFlowAI — ChatFlow</title>
-<meta name="theme-color" content="#05060b">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MatrixFlowAI — V5</title>
 <style>
-:root{--bg:#03050a;--panel:rgba(8,11,19,.82);--panel2:#0b101a;--line:rgba(255,255,255,.09);--txt:#f5f7ff;--muted:#78839b;--cyan:#38e3ff;--blue:#647dff;--violet:#b45cff}
-*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}button,textarea{font:inherit}
-.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 75% 10%,rgba(82,98,255,.14),transparent 28%),radial-gradient(circle at 8% 85%,rgba(0,221,255,.08),transparent 28%),#03050a;overflow:hidden;pointer-events:none}.grid{position:absolute;inset:-30%;background-image:linear-gradient(rgba(46,216,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(46,216,255,.11) 1px,transparent 1px);background-size:48px 48px;transform:perspective(580px) rotateX(60deg) translateY(29%);opacity:.2;animation:g 16s linear infinite}@keyframes g{to{transform:perspective(580px) rotateX(60deg) translateY(37%)}}.ring{position:absolute;left:58%;top:48%;width:540px;height:540px;border:1px solid rgba(72,211,255,.1);border-radius:50%;box-shadow:0 0 100px rgba(91,89,255,.08);animation:r 24s linear infinite}.ring:before{content:"";position:absolute;inset:12%;border:1px solid rgba(181,89,255,.1);border-radius:50%}@keyframes r{to{transform:rotate(360deg)}}.scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#3ae4ff,#b85dff,transparent);box-shadow:0 0 16px #3ae4ff;animation:s 9s linear infinite}@keyframes s{from{top:-1%}to{top:101%}}
-.app{height:100dvh;display:flex;position:relative;z-index:2}.side{width:252px;flex:none;height:100%;padding:16px 13px;background:rgba(5,8,14,.86);border-right:1px solid var(--line);backdrop-filter:blur(24px);display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:10px;padding:7px 9px 24px}.mark{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#25ddff,#667dff 50%,#b75cff);box-shadow:0 0 28px rgba(83,112,255,.3)}.brand b{font-size:14px}.brand small{display:block;color:#59637a;font-size:8px;letter-spacing:1.4px;text-transform:uppercase;margin-top:2px}.navTitle{color:#4f596e;font-size:8px;letter-spacing:1.5px;padding:10px 11px 7px}.nav button{width:100%;min-height:45px;border:1px solid transparent;background:transparent;color:#8791a7;border-radius:13px;padding:0 11px;display:flex;align-items:center;gap:11px;cursor:pointer;text-align:left;font-size:12px;font-weight:700}.nav button:hover,.nav button.active{color:#fff;background:linear-gradient(100deg,rgba(46,222,255,.08),rgba(156,83,255,.11));border-color:rgba(103,130,255,.18)}.ico{width:22px;text-align:center}.sideBottom{margin-top:auto;border:1px solid var(--line);border-radius:15px;padding:12px;background:rgba(255,255,255,.025)}.online{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800}.dot{width:7px;height:7px;border-radius:50%;background:#50efb0;box-shadow:0 0 10px #50efb0}.sideBottom small{display:block;color:#596278;font-size:8px;margin-top:5px}
-.main{min-width:0;flex:1;height:100%;display:flex;flex-direction:column}.top{height:70px;min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:rgba(4,7,12,.72);backdrop-filter:blur(20px)}.topLeft{display:flex;align-items:center;gap:12px}.menu{display:none;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:#fff;font-size:20px}.topTitle b{font-size:14px}.topTitle span{display:block;color:#5d677d;font-size:9px;margin-top:2px}.status{border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:99px;padding:8px 11px;color:#a3acc0;font-size:9px}.status i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#52edb0;box-shadow:0 0 10px #52edb0;margin-right:6px}
-.chat{flex:1;min-height:0;display:flex;flex-direction:column}.head{height:70px;min-height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line);background:rgba(4,7,12,.58)}.chatBrand{display:flex;align-items:center;gap:10px}.orb{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#28ddff,#667dff 52%,#ba5cff);box-shadow:0 0 28px rgba(81,116,255,.25)}.chatBrand b{font-size:14px}.chatBrand small{display:block;color:#5d677d;font-size:9px;margin-top:2px}.tools{display:flex;gap:8px}.toolBtn{border:1px solid var(--line);background:rgba(255,255,255,.025);color:#a5aec0;border-radius:99px;padding:8px 11px;font-size:9px;cursor:pointer}.toolBtn.on{color:#c7f7ff;border-color:rgba(48,226,255,.28);background:rgba(49,220,255,.07)}
-.messages{flex:1;min-height:0;overflow:auto;padding:25px max(18px,calc((100% - 860px)/2)) 22px;scrollbar-width:thin;scrollbar-color:#20283a transparent}.welcome{min-height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px 0 50px}.welcomeInner{max-width:700px}.welcomeOrb{width:80px;height:80px;border-radius:27px;margin:0 auto 24px;display:grid;place-items:center;font-size:30px;background:linear-gradient(135deg,#29ddff,#687cff 48%,#bf5bff);box-shadow:0 0 65px rgba(92,112,255,.3)}.welcome h1{font-size:clamp(37px,5vw,59px);letter-spacing:-3.5px;line-height:.98}.welcome h1 span{background:linear-gradient(90deg,#fff,#a9f0ff 35%,#7586ff 70%,#d66dff);-webkit-background-clip:text;background-clip:text;color:transparent}.welcome p{margin:16px auto 0;color:#78839a;font-size:13px;line-height:1.7;max-width:560px}.chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:24px}.chip{border:1px solid var(--line);background:rgba(255,255,255,.025);color:#929cb0;border-radius:99px;padding:10px 13px;font-size:9px;cursor:pointer}
-.message{display:flex;gap:11px;max-width:860px;margin:0 auto 21px;animation:in .22s ease}.message.user{justify-content:flex-end}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}.avatar{width:31px;height:31px;flex:none;border-radius:10px;display:grid;place-items:center;background:#111827;border:1px solid var(--line);font-size:10px}.bubble{max-width:min(760px,86vw);padding:13px 15px;border-radius:17px;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word}.ai .bubble{background:linear-gradient(145deg,#101725,#0b1019);border:1px solid var(--line);border-top-left-radius:5px}.user .bubble{background:linear-gradient(135deg,#556fff,#915aff);border-top-right-radius:5px}.sources{margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.07);font-size:9px;color:#667188}.sources a{display:block;color:#6ddfff;text-decoration:none;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.composerWrap{flex:none;padding:10px max(14px,calc((100% - 900px)/2)) max(12px);background:linear-gradient(180deg,transparent,rgba(3,5,10,.94) 18%)}.composer{display:flex;align-items:flex-end;gap:8px;padding:8px;border:1px solid rgba(116,133,255,.18);border-radius:19px;background:rgba(11,15,25,.94);box-shadow:0 18px 55px rgba(0,0,0,.4);backdrop-filter:blur(18px)}textarea{width:100%;max-height:130px;min-height:44px;resize:none;overflow:auto;border:0;outline:0;background:transparent;color:#fff;padding:11px 10px;font-size:13px;line-height:1.5}textarea::placeholder{color:#5f697f}.send{width:47px;height:47px;flex:none;border:0;border-radius:15px;background:linear-gradient(135deg,#2cddff,#687bff 55%,#b45cff);color:#fff;font-size:23px;cursor:pointer;box-shadow:0 10px 28px rgba(87,108,255,.28)}.send:disabled{opacity:.55}.note{text-align:center;color:#4f5a70;font-size:8px;margin-top:7px}
-.page{display:none;flex:1;min-height:0;overflow:auto;padding:42px clamp(20px,5vw,70px)}.page.show{display:block}.hero{max-width:1050px;margin:auto;padding:45px;border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,rgba(14,19,32,.84),rgba(7,9,16,.75));box-shadow:0 25px 80px rgba(0,0,0,.3)}.eyebrow{color:#79eaff;font-size:9px;font-weight:800;letter-spacing:1.7px}.hero h2{font-size:clamp(40px,6vw,72px);letter-spacing:-4px;margin-top:15px}.hero h2 span{background:linear-gradient(90deg,#fff,#8eeeff,#9a80ff,#d968ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:#78839a;margin-top:16px;max-width:620px;line-height:1.75;font-size:13px}
-.drawer{position:fixed;inset:0;z-index:40;display:none}.drawer.open{display:block}.shade{position:absolute;inset:0;background:rgba(0,0,0,.62);backdrop-filter:none;-webkit-backdrop-filter:none}.drawer .side{position:absolute;left:0;top:0;bottom:0;z-index:2;width:270px;box-shadow:25px 0 70px rgba(0,0,0,.45);background:#05080e;backdrop-filter:none;-webkit-backdrop-filter:none;filter:none;opacity:1}
-@media(max-width:760px){.side{display:none}.menu{display:block}.top{height:64px;min-height:64px;padding:0 14px}.topTitle b{font-size:13px}.status{padding:7px 9px}.head{height:64px;min-height:64px;padding:0 14px}.tools .toolBtn{padding:8px 9px}.messages{padding:18px 12px 16px}.welcome{padding:18px 0 35px}.welcomeOrb{width:68px;height:68px;border-radius:23px}.welcome h1{letter-spacing:-2.5px}.welcome p{font-size:12px}.composerWrap{padding:8px 10px max(10px,env(safe-area-inset-bottom))}.composer{border-radius:17px}.send{width:45px;height:45px}.page{padding:22px 14px}.hero{padding:28px 21px}.hero h2{letter-spacing:-2.5px}.drawer .side{display:flex}}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:#05070d;color:#eef3ff;overflow:hidden}
+.app{height:100vh;display:flex;background:radial-gradient(circle at 50% -10%,#17244a 0,#080b15 38%,#04050a 100%)}
+aside{width:250px;border-right:1px solid #20283d;background:rgba(7,10,19,.88);backdrop-filter:blur(20px);padding:18px;display:flex;flex-direction:column;gap:18px}
+.logo{font-size:20px;font-weight:800;letter-spacing:.4px}.logo span{color:#6ea8ff}.status{font-size:11px;color:#72f5bd;margin-top:4px}
+.nav button,.sidebtn{width:100%;border:1px solid #222c43;background:#0c1120;color:#cbd5ee;border-radius:13px;padding:12px;text-align:left;margin:4px 0;cursor:pointer}
+.nav button.active{background:linear-gradient(135deg,#15264d,#10182c);border-color:#3769bc;color:white}
+.bottom{margin-top:auto;font-size:11px;color:#77829b}
+main{flex:1;display:flex;flex-direction:column;min-width:0}.top{height:66px;border-bottom:1px solid #20283d;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(6,9,16,.55);backdrop-filter:blur(16px)}
+.badge{border:1px solid #273451;border-radius:999px;padding:7px 11px;font-size:11px;color:#9db0d5}.web{display:flex;align-items:center;gap:8px}.web input{accent-color:#6ea8ff}
+.view{flex:1;min-height:0;display:none}.view.active{display:flex}.chat{flex-direction:column;max-width:1050px;width:100%;margin:auto}.messages{flex:1;overflow:auto;padding:28px 24px 160px}.msg{max-width:820px;margin:0 auto 18px;line-height:1.6}.user{margin-left:auto;background:#121b30;border:1px solid #26375a;border-radius:18px 18px 5px;padding:12px 15px;width:max-content;max-width:80%}.ai{background:rgba(12,16,27,.7);border:1px solid #1d2940;border-radius:18px;padding:15px}.composer{position:fixed;bottom:18px;left:calc(250px + (100% - 250px)/2 - 440px);width:880px;max-width:calc(100% - 290px);display:flex;gap:9px;padding:10px;background:rgba(10,14,24,.92);border:1px solid #2a3650;border-radius:20px;box-shadow:0 18px 60px #0008;backdrop-filter:blur(18px)}
+textarea{flex:1;resize:none;height:46px;background:transparent;border:0;outline:0;color:white;padding:12px;font-size:14px}button.send{width:48px;border:0;border-radius:14px;background:#6ea8ff;color:#07101f;font-weight:800;cursor:pointer}
+.video{width:100%;padding:28px;overflow:auto}.hero{max-width:1100px;margin:auto}.hero h1{font-size:34px;margin:0 0 8px}.hero p{color:#8e9bb6}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.card{background:rgba(10,15,27,.8);border:1px solid #222e47;border-radius:20px;padding:20px}.card label{display:block;font-size:12px;color:#94a3c3;margin:14px 0 7px}.card input,.card select{width:100%;background:#0b1020;color:white;border:1px solid #283550;border-radius:11px;padding:12px}.generate{margin-top:18px;width:100%;padding:14px;border:0;border-radius:13px;background:linear-gradient(135deg,#6ea8ff,#8d78ff);font-weight:800;cursor:pointer}.preview{min-height:320px;border:1px dashed #34425f;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#65728e;text-align:center;padding:25px}.note{font-size:11px;color:#71809e;margin-top:12px;line-height:1.5}
+@media(max-width:800px){aside{width:72px;padding:12px 8px}.logo{font-size:0}.logo:after{content:"MF";font-size:18px}.nav button{font-size:0;text-align:center}.nav button:before{font-size:18px}.nav button:nth-child(1):before{content:"⌁"}.nav button:nth-child(2):before{content:"▶"}.bottom{display:none}.top{padding:0 12px}.composer{left:84px;max-width:calc(100% - 96px);width:auto}.grid{grid-template-columns:1fr}.messages{padding-left:12px;padding-right:12px}.video{padding:16px}}
 </style>
 </head>
 <body>
-<div class="bg"><div class="grid"></div><div class="ring"></div><div class="scan"></div></div>
 <div class="app">
-<aside class="side" id="side">
-<div class="brand"><div class="mark">✦</div><div><b>MatrixFlowAI</b><small>Intelligence OS</small></div></div>
-<div class="navTitle">WORKSPACE</div><nav class="nav">
-<button class="active" onclick="showPage('chat',this)"><span class="ico">✦</span> ChatFlow</button>
-<button onclick="showPage('video',this)"><span class="ico">◉</span> VideoFlow <span class="soon">SOON</span></button>
-<button onclick="showPage('write',this)"><span class="ico">✎</span> FlowWrite <span class="soon">SOON</span></button>
-<button onclick="showPage('data',this)"><span class="ico">◈</span> DataMind <span class="soon">SOON</span></button>
-</nav>
-<div class="sideBottom"><div class="online"><i class="dot"></i> AI CORE ONLINE</div><small>OpenRouter gateway connected</small></div>
+<aside>
+  <div><div class="logo">MatrixFlow<span>AI</span></div><div class="status">● V5 ONLINE</div></div>
+  <div class="nav">
+    <button class="active" data-view="chat">ChatFlow</button>
+    <button data-view="video">VideoFlow</button>
+  </div>
+  <div class="bottom">Fast streaming • Context aware<br>Video pipeline ready</div>
 </aside>
-<main class="main">
-<header class="top"><div class="topLeft"><button class="menu" onclick="openDrawer()">☰</button><div class="topTitle"><b id="topTitle">ChatFlow</b><span>Live intelligence workspace</span></div></div><div class="status"><i></i> SYSTEM ONLINE</div></header>
-<section class="chat" id="chat">
-<div class="head"><div class="chatBrand"><div class="orb">✦</div><div><b>ChatFlow</b><small>MatrixFlow intelligence</small></div></div><div class="tools"><button class="toolBtn on" id="searchBtn" onclick="toggleSearch()">◉ <span id="searchText">LIVE WEB ON</span></button></div></div>
-<div class="messages" id="messages"><div class="welcome" id="welcome"><div class="welcomeInner"><div class="welcomeOrb">✦</div><h1>How can I <span>help you?</span></h1><p>Ask anything. With Live Web on, MatrixFlowAI can research fresh information and attach source links to the answer.</p><div class="chips"><button class="chip" onclick="use('What are the latest AI developments today?')">Latest AI news</button><button class="chip" onclick="use('Compare the best AI models available right now')">Best AI models</button><button class="chip" onclick="use('Find the best free AI tools for students')">AI tools</button></div></div></div></div>
-<div class="composerWrap"><form class="composer" id="form"><textarea id="prompt" rows="1" placeholder="Ask MatrixFlowAI anything..."></textarea><button class="send" id="send" type="submit">➤</button></form><div class="note" id="note">Live Web Search ON · fresh sources may add usage cost</div></div>
+<main>
+<header class="top"><strong id="title">ChatFlow</strong><div class="web"><label>Smart Web</label><input id="webToggle" type="checkbox" checked></div></header>
+
+<section id="chat" class="view active chat">
+  <div id="messages" class="messages">
+    <div class="msg"><div class="ai">👋 <b>MatrixFlowAI V5</b><br>Fast mode is ready. I’ll keep recent conversation context, so follow-ups like “yes”, “next”, “isme”, or “isko” continue from the previous message.</div></div>
+  </div>
+  <div class="composer"><textarea id="prompt" placeholder="Ask anything…"></textarea><button class="send" id="send">➤</button></div>
 </section>
-<section class="page" id="video"><div class="hero"><div class="eyebrow">CREATIVE ENGINE</div><h2>VideoFlow <span>is coming.</span></h2><p>Cinematic AI video workflows are being prepared for the MatrixFlowAI workspace.</p></div></section>
-<section class="page" id="write"><div class="hero"><div class="eyebrow">CREATIVE WRITING</div><h2>FlowWrite <span>is coming.</span></h2><p>Writing, rewriting, ideation and content workflows will live here.</p></div></section>
-<section class="page" id="data"><div class="hero"><div class="eyebrow">INTELLIGENT ANALYTICS</div><h2>DataMind <span>is coming.</span></h2><p>Data analysis, patterns and AI-powered insights are planned for this workspace.</p></div></section>
+
+<section id="video" class="view video">
+<div class="hero">
+<h1>🎬 VideoFlow</h1><p>Create a video job from a prompt. Provider APIs stay server-side and can be switched without changing the UI.</p>
+<div class="grid">
+<div class="card">
+<label>Video prompt</label><textarea id="vp" style="height:130px;background:#0b1020;border:1px solid #283550;border-radius:11px;width:100%" placeholder="Describe your video..."></textarea>
+<label>Quality</label><select id="quality"><option>1080p</option><option>4K</option><option>8K (upscale-ready)</option></select>
+<label>Aspect ratio</label><select id="ratio"><option>16:9</option><option>9:16</option><option>1:1</option></select>
+<button class="generate" id="generate">Generate Video</button>
+<div class="note">Native resolution depends on the selected provider/model. 4K/8K options are workflow targets, not a promise of free native 8K generation.</div>
+</div>
+<div class="card"><div class="preview" id="preview">Your rendered video will appear here.<br><br>Video generation API is routed through the Worker.</div></div>
+</div></div>
+</section>
 </main></div>
-<div class="drawer" id="drawer"><div class="shade" onclick="closeDrawer()"></div><aside class="side">
-<div class="brand"><div class="mark">✦</div><div><b>MatrixFlowAI</b><small>Intelligence OS</small></div></div>
-<div class="navTitle">WORKSPACE</div><nav class="nav">
-<button class="active" onclick="showPage('chat',this)"><span class="ico">✦</span> ChatFlow</button>
-<button onclick="showPage('video',this)"><span class="ico">◉</span> VideoFlow <span class="soon">SOON</span></button>
-<button onclick="showPage('write',this)"><span class="ico">✎</span> FlowWrite <span class="soon">SOON</span></button>
-<button onclick="showPage('data',this)"><span class="ico">◈</span> DataMind <span class="soon">SOON</span></button>
-</nav><div class="sideBottom"><div class="online"><i class="dot"></i> AI CORE ONLINE</div><small>OpenRouter gateway connected</small></div>
-</aside></div>
+
 <script>
-const WORKER="https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
-const prompt=document.getElementById("prompt"),form=document.getElementById("form"),messages=document.getElementById("messages"),send=document.getElementById("send");
-let webOn=true; const HISTORY_KEY="matrixflowai_chat_history_v2", MAX_HISTORY=18;
-function openDrawer(){document.getElementById("drawer").classList.add("open")}function closeDrawer(){document.getElementById("drawer").classList.remove("open")}
-function showPage(name,btn){["chat","video","write","data"].forEach(x=>{const e=document.getElementById(x);if(x==="chat")e.style.display=name==="chat"?"flex":"none";else e.classList.toggle("show",x===name)});document.getElementById("topTitle").textContent=name==="chat"?"ChatFlow":name[0].toUpperCase()+name.slice(1)+"Flow";document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");closeDrawer();if(name==="chat")setTimeout(()=>prompt.focus(),80)}
-function toggleSearch(){webOn=!webOn;document.getElementById("searchBtn").classList.toggle("on",webOn);document.getElementById("searchText").textContent=webOn?"LIVE WEB ON":"WEB OFF";document.getElementById("note").textContent=webOn?"Live Web Search ON · fresh sources may add usage cost":"Web Search OFF · model knowledge only"}
-function use(t){prompt.value=t;resize();prompt.focus()} function resize(){prompt.style.height="auto";prompt.style.height=Math.min(prompt.scrollHeight,130)+"px"}
-prompt.addEventListener("input",resize);prompt.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();form.requestSubmit()}});function scroll(){requestAnimationFrame(()=>messages.scrollTop=messages.scrollHeight)}
-function getHistory(){try{const h=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");return Array.isArray(h)?h.slice(-MAX_HISTORY):[]}catch{return []}}function saveHistory(h){localStorage.setItem(HISTORY_KEY,JSON.stringify(h.slice(-MAX_HISTORY)))}function addToHistory(role,content){const h=getHistory();h.push({role,content});saveHistory(h)}
-function addUser(t){document.getElementById("welcome")?.remove();const r=document.createElement("div");r.className="message user";const b=document.createElement("div");b.className="bubble";b.textContent=t;r.appendChild(b);messages.appendChild(r);scroll()}
-function createAI(){const r=document.createElement("div");r.className="message ai";const a=document.createElement("div");a.className="avatar";a.textContent="✦";const w=document.createElement("div");const b=document.createElement("div");b.className="bubble";b.textContent="";w.appendChild(b);r.append(a,w);messages.appendChild(r);scroll();return{r,b,w}}
-function addSources(w,src){if(!src?.length)return;const s=document.createElement("div");s.className="sources";s.textContent="WEB SOURCES";src.slice(0,6).forEach(x=>{const l=document.createElement("a");l.href=x.url;l.target="_blank";l.rel="noopener noreferrer";l.textContent=x.title||x.url;s.appendChild(l)});w.appendChild(s)}
-function loadSavedChat(){const h=getHistory();if(!h.length)return;document.getElementById("welcome")?.remove();for(const m of h){if(m.role==="user")addUser(m.content);else if(m.role==="assistant"){const x=createAI();x.b.textContent=m.content}}scroll()}
-async function askAI(q,history,target){const r=await fetch(WORKER,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:q,webSearch:webOn,history})});if(!r.ok){let d={};try{d=await r.json()}catch{}throw new Error(d?.error||"AI gateway error")}
-const type=r.headers.get("content-type")||"";if(!type.includes("text/event-stream")){const d=await r.json();target.b.textContent=d.response||"No answer returned.";addSources(target.w,d.sources||[]);return d.response||""}
-const reader=r.body.getReader(),decoder=new TextDecoder();let buffer="",full="",sources=[];while(true){const {value,done}=await reader.read();if(done)break;buffer+=decoder.decode(value,{stream:true});const lines=buffer.split("\n");buffer=lines.pop()||"";for(let line of lines){line=line.trim();if(!line.startsWith("data:"))continue;const raw=line.slice(5).trim();if(!raw)continue;try{const d=JSON.parse(raw);if(d.type==="delta"){full+=d.delta||"";target.b.textContent=full;scroll()}else if(d.type==="sources")sources=d.sources||[];else if(d.type==="error")throw new Error(d.error||"AI gateway error")}catch(err){if(err.message&&err.message!=="Unexpected end of JSON input")throw err}}}if(sources.length)addSources(target.w,sources);return full}
-form.addEventListener("submit",async e=>{e.preventDefault();const q=prompt.value.trim();if(!q||send.disabled)return;const history=getHistory();addUser(q);addToHistory("user",q);prompt.value="";resize();send.disabled=true;const target=createAI();try{const answer=await askAI(q,history,target);if(!answer)target.b.textContent="No answer returned.";addToHistory("assistant",answer||"")}catch(err){target.b.textContent="I couldn't complete that request right now. Please try again.";console.error(err)}finally{send.disabled=false;prompt.focus();scroll()}});
-loadSavedChat();
+const WORKER_URL="https://matrixflowai-chat.agnihotrimayank99.workers.dev/";
+const $=id=>document.getElementById(id);
+let history=JSON.parse(localStorage.getItem("mf_history")||"[]");
+
+function add(text,who){const wrap=document.createElement("div");wrap.className="msg";const b=document.createElement("div");b.className=who==="user"?"user":"ai";b.textContent=text;wrap.appendChild(b);$("messages").appendChild(wrap);$("messages").scrollTop=$("messages").scrollHeight;return b}
+function save(){history=history.slice(-18);localStorage.setItem("mf_history",JSON.stringify(history))}
+async function send(){
+ const p=$("prompt").value.trim(); if(!p)return;
+ $("prompt").value=""; add(p,"user"); const box=add("","ai"); $("send").disabled=true;
+ history.push({role:"user",content:p}); save();
+ try{
+  const r=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:p,history,webSearch:$("webToggle").checked})});
+  if(!r.ok) throw new Error("Worker error "+r.status);
+  const type=r.headers.get("content-type")||"";
+  if(type.includes("text/event-stream")){
+   const reader=r.body.getReader(), dec=new TextDecoder(); let buf="";
+   while(true){const {value,done}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});let parts=buf.split("\\n\\n");buf=parts.pop();
+    for(const part of parts){const line=part.split("\\n").find(x=>x.startsWith("data:"));if(!line)continue;try{const d=JSON.parse(line.slice(5).trim());if(d.type==="delta")box.textContent+=d.delta; if(d.type==="error")box.textContent="⚠️ "+d.error}catch{}}
+   }
+  }else{const d=await r.json();box.textContent=d.response||d.error||"No response";}
+  history.push({role:"assistant",content:box.textContent});save();
+ }catch(e){box.textContent="⚠️ "+e.message}
+ $("send").disabled=false;
+}
+$("send").onclick=send;$("prompt").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}})
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));$(b.dataset.view).classList.add("active");$("title").textContent=b.textContent});
+$("generate").onclick=async()=>{const prompt=$("vp").value.trim();if(!prompt)return alert("Video prompt likho");$("preview").textContent="⏳ Creating video job…";try{const r=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"video",prompt,quality:$("quality").value,aspectRatio:$("ratio").value})});const d=await r.json();$("preview").textContent=d.videoUrl?"✅ Video ready":"✅ Job created: "+(d.jobId||"check Worker response");if(d.videoUrl){const v=document.createElement("video");v.controls=true;v.src=d.videoUrl;v.style.maxWidth="100%";$("preview").replaceChildren(v)}}catch(e){$("preview").textContent="⚠️ "+e.message}};
 </script>
 </body>
 </html>
