@@ -1,8 +1,8 @@
-# MatrixFlowAI Premium UI
+MATRIXFLOWAI PREMIUM V2
 
-1. Replace your existing `dashboard.html` with this file.
-2. Keep your current Cloudflare Worker unchanged.
-3. The ChatFlow frontend points to:
-   https://matrixflowai-chat.agnihotrimayank99.workers.dev/
-4. API keys are NOT stored in this HTML file.
-5. VideoFlow/FlowWrite/DataMind are premium placeholders for the next backend integrations.
+1. Replace your GitHub dashboard.html with dashboard.html.
+2. Replace the Cloudflare Worker code with worker.js and Deploy.
+3. Keep the existing Cloudflare secret name OPENROUTER_API_KEY unchanged.
+4. The ChatFlow input is always visible; only the message area scrolls.
+5. Live Web Search is ON by default.
+6. OpenRouter web search can add usage cost even when the selected model is free. Check your OpenRouter credits/usage before making it public.
