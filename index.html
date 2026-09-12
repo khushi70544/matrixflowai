@@ -1,79 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MatrixFlowAI — Intelligent AI Workflows</title>
-<meta name="description" content="MatrixFlowAI builds practical AI tools for smarter workflows, automation, content, data and code.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MatrixFlowAI — The Intelligence Layer</title>
+<meta name="theme-color" content="#05060b">
+<style>
+:root{--bg:#03040a;--card:rgba(12,15,27,.72);--line:rgba(255,255,255,.11);--txt:#f7f8ff;--muted:#8790a8;--cyan:#35e4ff;--blue:#637bff;--violet:#b45cff;--green:#50f0b1}
+*{box-sizing:border-box;margin:0;padding:0}html,body{min-height:100%;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}body{overflow-x:hidden}
+button,input{font:inherit}.scene{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(circle at 50% 25%,rgba(70,88,255,.16),transparent 30%),radial-gradient(circle at 15% 80%,rgba(0,220,255,.08),transparent 28%),#03040a}
+.grid{position:absolute;inset:-25%;background-image:linear-gradient(rgba(75,190,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(75,190,255,.1) 1px,transparent 1px);background-size:52px 52px;transform:perspective(650px) rotateX(62deg) translateY(30%);opacity:.28;animation:grid 18s linear infinite}@keyframes grid{to{transform:perspective(650px) rotateX(62deg) translateY(38%)}}
+.orbit{position:absolute;left:50%;top:42%;width:min(650px,90vw);aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid rgba(77,218,255,.16);border-radius:50%;box-shadow:0 0 90px rgba(68,94,255,.1);animation:spin 22s linear infinite}.orbit:before,.orbit:after{content:"";position:absolute;inset:12%;border:1px solid rgba(181,92,255,.12);border-radius:50%;animation:spin 15s linear infinite reverse}.orbit:after{inset:25%;border-color:rgba(50,226,255,.13)}@keyframes spin{to{transform:rotate(360deg)}}
+.core{position:absolute;left:50%;top:42%;width:180px;height:180px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#fff 0 2%,#8fefff 5%,#5e7cff 22%,rgba(180,80,255,.35) 45%,transparent 70%);filter:drop-shadow(0 0 35px rgba(73,185,255,.65));animation:pulse 3s ease-in-out infinite}@keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.1);filter:drop-shadow(0 0 60px rgba(120,90,255,.75))}}
+.scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#31e4ff,#b35cff,transparent);box-shadow:0 0 18px #4be5ff;animation:scan 8s linear infinite}@keyframes scan{from{top:0}to{top:100%}}
+header{position:relative;z-index:5;max-width:1220px;margin:auto;padding:22px clamp(18px,4vw,44px);display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:#fff}.brandMark{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#22dcff,#647bff 50%,#b856ff);box-shadow:0 0 32px rgba(87,110,255,.35);font-size:20px}.brand b{font-size:15px}.brand small{display:block;color:#657089;font-size:8px;letter-spacing:1.7px;text-transform:uppercase;margin-top:3px}.nav{display:flex;gap:9px}.ghost,.primary{border:1px solid var(--line);border-radius:13px;padding:11px 16px;background:rgba(255,255,255,.035);color:#fff;cursor:pointer;font-weight:750;font-size:12px}.primary{border:0;background:linear-gradient(110deg,#23dfff,#6579ff 52%,#b25cff);box-shadow:0 12px 35px rgba(78,103,255,.3)}
+main{position:relative;z-index:2;max-width:1220px;margin:auto;padding:65px clamp(18px,4vw,44px) 70px}.hero{text-align:center;max-width:940px;margin:0 auto}.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(86,220,255,.18);border-radius:99px;background:rgba(49,220,255,.055);color:#a9efff;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.badge i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}h1{font-size:clamp(47px,8vw,92px);line-height:.91;letter-spacing:-5px;margin-top:25px}h1 span{background:linear-gradient(90deg,#fff,#a7edff 35%,#6f83ff 67%,#d46bff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:680px;margin:24px auto 0;color:#8b94aa;font-size:15px;line-height:1.75}.heroActions{display:flex;justify-content:center;gap:10px;margin-top:30px;flex-wrap:wrap}.big{padding:15px 23px;border-radius:15px;font-size:13px}.trust{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:24px;color:#5e687e;font-size:9px}.trust span:before{content:"✓";color:#55eeb5;margin-right:5px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:72px}.card{padding:22px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(16,20,34,.8),rgba(7,9,16,.68));backdrop-filter:blur(18px);box-shadow:0 25px 70px rgba(0,0,0,.22)}.icon{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(41,222,255,.16),rgba(170,83,255,.17));border:1px solid rgba(116,135,255,.15);margin-bottom:19px}.card h3{font-size:15px}.card p{margin-top:8px;color:#707a91;font-size:10px;line-height:1.65}
+footer{position:relative;z-index:2;text-align:center;color:#4f586b;font-size:9px;padding:20px 20px 35px}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.68);backdrop-filter:blur(16px)}.modal.open{display:flex}.box{width:min(430px,100%);border:1px solid rgba(255,255,255,.13);border-radius:26px;padding:25px;background:linear-gradient(145deg,rgba(15,19,33,.97),rgba(7,9,16,.97));box-shadow:0 35px 100px rgba(0,0,0,.65)}.boxTop{display:flex;justify-content:space-between;align-items:center}.box h2{font-size:23px}.close{width:34px;height:34px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;cursor:pointer}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:20px 0 16px}.tab{padding:10px;border-radius:11px;border:1px solid var(--line);background:transparent;color:#79839a;cursor:pointer;font-size:11px;font-weight:700}.tab.active{background:rgba(92,116,255,.14);color:#fff;border-color:rgba(106,129,255,.3)}label{display:block;color:#7d879c;font-size:9px;margin:12px 0 6px}input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);outline:none;background:#090d17;color:#fff;font-size:12px}input:focus{border-color:rgba(82,213,255,.45);box-shadow:0 0 0 3px rgba(53,228,255,.06)}.submit{width:100%;margin-top:18px;padding:13px;border:0;border-radius:13px;background:linear-gradient(110deg,#24dcff,#637bff 55%,#b55cff);color:#fff;font-weight:800;cursor:pointer}.hint{text-align:center;color:#5f6980;font-size:9px;margin-top:12px;line-height:1.5}
+@media(max-width:760px){header{padding-top:16px}.nav .ghost{display:none}main{padding-top:48px}h1{letter-spacing:-3px}.core{width:125px;height:125px}.orbit{top:39%;}.cards{grid-template-columns:1fr;margin-top:55px}.card{padding:19px}.hero p{font-size:13px}.trust{gap:11px}}
+</style>
 </head>
 <body>
-<header><div class="wrap"><nav>
-<a class="brand" href="index.html">〽 MatrixFlow<span>AI</span></a>
-<div class="links desktop-links">
-<a href="products.html">Products</a>
-<a href="about.html">About</a>
-<a href="features.html">Features</a>
-<a href="pricing.html">Pricing</a>
-<a href="contact.html">Contact</a>
-</div>
-<div class="auth-nav"><a class="login-link" href="login.html">Login</a><a class="btn header-cta" href="signup.html">Get Started</a></div>
-<button class="mobile-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
-</nav></div>
-<div id="mobileMenu" class="mobile-menu">
-<a href="products.html">Products</a>
-<a href="about.html">About</a>
-<a href="features.html">Features</a>
-<a href="pricing.html">Pricing</a>
-<a href="contact.html">Contact</a>
-<a href="login.html">Login</a>
-<a href="signup.html">Sign Up</a>
-</div></header>
-
+<div class="scene"><div class="grid"></div><div class="orbit"></div><div class="core"></div><div class="scan"></div></div>
+<header>
+<a class="brand" href="#"><div class="brandMark">✦</div><div><b>MatrixFlowAI</b><small>Intelligence OS</small></div></a>
+<div class="nav"><button class="ghost" onclick="openAuth('login')">Sign in</button><button class="primary" onclick="openAuth('register')">Create account</button></div>
+</header>
 <main>
-<section class="hero"><div class="wrap" style="display:contents">
-<div>
-<span class="eyebrow">Next-Gen AI Solutions</span>
-<h1>Turn Your Ideas into <span class="grad">Intelligent Workflows</span></h1>
-<p>MatrixFlowAI is building practical AI tools for individuals, startups and businesses — helping you automate work, create content, understand data and build faster.</p>
-<div class="actions"><a class="btn" href="products.html">Explore Products →</a><a class="ghost" href="about.html">Learn More</a></div>
-<div class="muted">✓ Easy to use &nbsp;&nbsp; ✓ Built for modern teams &nbsp;&nbsp; ✓ AI-powered</div>
-</div>
-<div class="hero-art"><img src="assets/hero.png" alt="MatrixFlowAI AI concept"></div>
-</div></section>
-
-<section class="light"><div class="wrap">
-<div class="section-title"><div class="grad">WHY MATRIXFLOWAI</div><h2>Everything You Need, One Platform</h2><p class="muted">A growing suite of AI tools designed to make work faster and smarter.</p></div>
-<div class="grid">
-<div class="card"><div class="icon">💬</div><h3>AI Chat Assistant</h3><p>Get instant help with research, ideas, writing and everyday tasks.</p></div>
-<div class="card"><div class="icon">⚡</div><h3>Workflow Automation</h3><p>Reduce repetitive work by turning common tasks into intelligent workflows.</p></div>
-<div class="card"><div class="icon">✦</div><h3>Content Generation</h3><p>Create drafts, posts, summaries and other useful content quickly.</p></div>
-<div class="card"><div class="icon">▥</div><h3>Data Insights</h3><p>Turn information into clearer insights to support better decisions.</p></div>
-<div class="card"><div class="icon">&lt;/&gt;</div><h3>Code Assistance</h3><p>Write, explain, debug and improve code with AI assistance.</p></div>
-<div class="card"><div class="icon">⚙</div><h3>Custom AI Solutions</h3><p>Build tailored AI experiences around your real business needs.</p></div>
-</div>
-</div></section>
-
-<section><div class="wrap">
-<div class="section-title"><div class="grad">OUR PRODUCTS</div><h2>AI Tools for Every Need</h2><p class="muted">Explore the MatrixFlowAI product vision.</p></div>
-<div class="grid">
-<div class="card product"><h3>ChatFlow</h3><p>Smart AI chat for work, study and everyday productivity.</p><a class="product-action" href="products.html#chatflow">Learn More →</a></div>
-<div class="card product"><h3>FlowWrite</h3><p>Create useful written content with AI-assisted workflows.</p><a class="product-action" href="products.html#flowwrite">Learn More →</a></div>
-<div class="card product"><h3>DataMind</h3><p>Analyze information and turn data into actionable insights.</p><a class="product-action" href="products.html#datamind">Learn More →</a></div>
-</div>
-<div class="actions" style="justify-content:center"><a class="btn" href="products.html">View All Products →</a></div>
-</div></section>
-
-<section class="cta"><div class="wrap"><h2>Ready to Build With AI?</h2><p>Tell us what you want to create and we’ll point you in the right direction.</p><a class="btn" href="signup.html">Get Started →</a></div></section>
+<section class="hero">
+<div class="badge"><i></i> AI CORE ONLINE · WEB INTELLIGENCE READY</div>
+<h1>One workspace.<br><span>Infinite intelligence.</span></h1>
+<p>MatrixFlowAI brings AI chat, live web research and creative intelligence into one futuristic workspace built for speed.</p>
+<div class="heroActions"><button class="primary big" onclick="openAuth('register')">Enter MatrixFlowAI →</button><button class="ghost big" onclick="openAuth('login')">I already have an account</button></div>
+<div class="trust"><span>Live web research</span><span>Fast AI gateway</span><span>Mobile ready</span><span>Private API key</span></div>
+</section>
+<section class="cards">
+<div class="card"><div class="icon">◈</div><h3>ChatFlow</h3><p>Ask anything and get polished answers through the MatrixFlowAI intelligence layer.</p></div>
+<div class="card"><div class="icon">⌁</div><h3>Live Web</h3><p>Turn on live research when you need fresh information and source links.</p></div>
+<div class="card"><div class="icon">✦</div><h3>Creative Suite</h3><p>Video, writing and data workspaces are designed to grow inside the same OS.</p></div>
+</section>
 </main>
+<footer>© 2026 MatrixFlowAI · Built for the next generation of AI workflows</footer>
 
-<footer><div class="wrap foot">
-<div>© 2026 MatrixFlowAI. All rights reserved.</div>
-<div><a href="about.html">About</a> &nbsp;·&nbsp; <a href="contact.html">Contact</a> &nbsp;·&nbsp; <a href="mailto:admin@matrixflowai.in">admin@matrixflowai.in</a></div>
-</div></footer>
-<script src="script.js"></script>
+<div class="modal" id="modal" onclick="if(event.target===this)closeAuth()">
+<div class="box">
+<div class="boxTop"><h2 id="modalTitle">Welcome back</h2><button class="close" onclick="closeAuth()">×</button></div>
+<div class="tabs"><button class="tab active" id="loginTab" onclick="mode('login')">Sign in</button><button class="tab" id="registerTab" onclick="mode('register')">Register</button></div>
+<form id="authForm">
+<label>Email</label><input id="email" type="email" required placeholder="you@example.com">
+<div id="nameField" style="display:none"><label>Your name</label><input id="name" placeholder="Your name"></div>
+<label>Password</label><input id="password" type="password" required minlength="6" placeholder="••••••••">
+<button class="submit" id="submitBtn">Continue →</button>
+<div class="hint">Demo account UI is stored locally in this browser. Connect a real auth backend before using it for production accounts.</div>
+</form>
+</div>
+</div>
+<script>
+let authMode="login";
+const modal=document.getElementById("modal");
+function openAuth(m){modal.classList.add("open");mode(m)}
+function closeAuth(){modal.classList.remove("open")}
+function mode(m){authMode=m;document.getElementById("modalTitle").textContent=m==="login"?"Welcome back":"Create your MatrixFlowAI account";document.getElementById("nameField").style.display=m==="register"?"block":"none";document.getElementById("loginTab").classList.toggle("active",m==="login");document.getElementById("registerTab").classList.toggle("active",m==="register");document.getElementById("submitBtn").textContent=m==="login"?"Enter workspace →":"Create account →"}
+document.getElementById("authForm").addEventListener("submit",e=>{e.preventDefault();localStorage.setItem("matrixflowai_user",document.getElementById("email").value.trim());location.href="dashboard.html"});
+</script>
 </body>
 </html>
